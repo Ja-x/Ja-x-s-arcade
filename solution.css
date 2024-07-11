@@ -26,6 +26,12 @@ footer {
   border-radius: 25px;
 }
 
+.row {
+	display: flex;
+	flex-direction: row;
+	
+}
+
 .card {
   width: 45%;
   border-radius: 25px;
