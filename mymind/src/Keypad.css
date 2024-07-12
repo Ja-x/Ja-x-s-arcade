@@ -1,0 +1,74 @@
+button {
+
+    margin: 10px;
+    width: 30px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+button:hover {
+    border-color: #646cff;
+}
+
+#deleteButton {
+  margin: 10px;
+  width: 50px;
+}
+
+button:focus,
+button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+}
+ 
+
+/* The button coloring */
+
+#button-1 {
+    background-color: red;
+  }
+  
+  #button-2 {
+    background-color: blue;
+  }
+  
+  #button-3 {
+    background-color: green;
+  }
+  
+  #button-4 {
+    background-color: yellow;
+    color:black;
+  }
+  
+  #button-5 {
+    background-color: orange;
+  }
+  
+  #button-6 {
+    background-color: purple;
+  }
+  
+  #button-7 {
+    background-color: pink;
+  }
+  
+  #button-8 {
+    background-color: brown;
+  }
+  
+  #button-9 {
+    background-color: gray;
+  }
+  
+  #button-0 {
+    background-color: black;
+    color: white;
+  }
+  
