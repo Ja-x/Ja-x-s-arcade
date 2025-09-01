@@ -13,9 +13,18 @@ body {
   padding: 3rem 1rem;
 }
 
-.logo {
+/* .logo {
   max-width: 180px;
   margin-bottom: 1rem;
+} */
+
+.logo {
+  width: 600px;              /* vie 80% näytön leveydestä */
+  max-width: 800px;        /* (valinnainen) rajoitus, ettei kasva liian suureksi isoilla näytöillä */
+  display: block;          /* keskittämistä varten */
+  margin: 1rem auto;       /* ylä- ja alaväli + keskitys vaakasuunnassa */
+  border-radius: 15px;     /* pyöristetyt kulmat */
+  border: 3px solid silver; /* hopeanharmaa reunus */
 }
 
 h1 {
