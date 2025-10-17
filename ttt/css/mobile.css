@@ -1,0 +1,49 @@
+#game {
+    width : 100%;
+    height : 100%;
+}
+
+/* use a smaller base size for small screens */
+@media (max-device-width: 480px) {
+    #game {
+        font-size : 32px;
+    }
+}
+
+/* use a bigger base size for tablets */
+@media (min-device-width: 768px) {
+    #game {
+        font-size : 64px;
+    }
+}
+
+#square-size, #square-size-checkers, #square-size-ten, #square-size-six{
+    position : absolute;
+    left : -1000px;
+    width : 70px !important;
+    height : 70px !important;
+}
+
+@media(max-width: 730px) {
+
+  /* 9 col */
+  #square-size {
+      width : 10vw !important;
+      height : 10vw !important;
+  }
+  /* 8 col */
+  #square-size-checkers {
+      width : 11vw !important;
+      height : 11vw !important;
+  }
+
+  #square-size-six {
+      width : 15vw !important;
+      height : 15vw !important;
+  }
+
+  #square-size-ten {
+      width : 9vw !important;
+      height : 9vw !important;
+  }
+}
