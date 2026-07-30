@@ -34,7 +34,7 @@ var ttt = {
         theme_a_blue:'#174f82'
     },
     settings : {
-        sizeLoader : 1,
+        sizeLoader : 0.5,
         ticPadding : 4,
         ticWidth : 2,
         animateCrossPoints : 20

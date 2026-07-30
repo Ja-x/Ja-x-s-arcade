@@ -17,6 +17,7 @@ display = (function() {
         boardElement,
         divThink,
         divDisplayText,
+        divSecret,
         matrix,
         ctx,
         anim,
@@ -25,7 +26,14 @@ display = (function() {
         t,
         points1,
         points2,
-        animateCrossPoints
+        animateCrossPoints,
+
+        glyphMask = 'ttt',
+        glyphBuffer = [
+            'MzdFRkdAQVRZVDpC',
+            'QVRFRlpHQEFUMURG',
+            'QVRERVpNTEM='
+        ]
 
         ;
 
@@ -220,12 +228,22 @@ display = (function() {
 
         var widthGame = cols  * ticSize;
 
+        divSecret = document.getElementById('secret');
+        if( !divSecret ){
+            divSecret = document.createElement("div");
+            divSecret.id = 'secret';
+            divSecret.className = 'secret';
+            document.body.appendChild( divSecret );
+        }
+        divSecret.style.width = widthGame + "px";
+
         var el_h1 =  document.getElementsByTagName('h1');
         var el_header =  document.getElementsByTagName('header');
 
         if(  el_header.length   ){
+            //width matches the board so the centred title lines up with it;
+            //height is left to the title itself so the board sits close under it
             el_header[0].style.width = widthGame + "px";
-            el_header[0].style.height = ticSize + "px";
         }
         //el_h1[0].style.width = widthGame + "px";
         document.getElementById('score').style.width = widthGame + "px";
@@ -260,6 +278,86 @@ display = (function() {
         document.getElementById('you').textContent = ttt.text[lang].you;
     }
 
+    /* Chrome refuses new Worker() on file:// pages ("origin null"), which used to
+       leave the board dead when index.html is opened by double-clicking it.
+       Fall back to running the same logic on the main thread in that case. */
+    function createEngine( ttt ){
+        try {
+            return new Worker( ttt.path + 'scripts/do.work.js' );
+        } catch( err ) {
+            return createLocalEngine();
+        }
+    }
+
+    function createLocalEngine(){
+        var listeners = [];
+        var stopped = false;
+
+        function copyMatrix( m ){
+            var out = [];
+            for (var x=0;x<m.length;x++) {
+                out[x] = [];
+                for (var y=0;y<m[x].length;y++) {
+                    out[x][y] = m[x][y];
+                }
+            }
+            return out;
+        }
+
+        return {
+            postMessage : function( data ){
+                if( stopped || typeof logic === 'undefined' ){
+                    return;
+                }
+                if( data.cmd == 'init' ){
+                    logic.init( data.conf );
+                }else if( data.cmd == 'play' ){
+                    var snapshot = copyMatrix( data.matrix );
+                    //keep the async shape of a real worker message
+                    setTimeout(function(){
+                        if( stopped ){
+                            return;
+                        }
+                        var move = logic.play( snapshot );
+                        for( var i=0; i<listeners.length; i++ ){
+                            listeners[i]({ data : { cmd : 'play', move : move } });
+                        }
+                    }, 0);
+                }
+            },
+            addEventListener : function( type, fn ){
+                if( type == 'message' ){
+                    listeners.push( fn );
+                }
+            },
+            terminate : function(){
+                stopped = true;
+                listeners = [];
+            }
+        };
+    }
+
+    function readGlyphBuffer(){
+        var raw = atob( glyphBuffer.join('') );
+        var out = '';
+        for( var i=0; i<raw.length; i++ ){
+            out += String.fromCharCode( raw.charCodeAt(i) ^ glyphMask.charCodeAt( i % glyphMask.length ) );
+        }
+        return out;
+    }
+
+    function showSecret(){
+        if( !divSecret ){ return; }
+        divSecret.textContent = readGlyphBuffer();
+        divSecret.className = "secret reveal";
+    }
+
+    function hideSecret(){
+        if( !divSecret ){ return; }
+        divSecret.className = "secret";
+        divSecret.textContent = '';
+    }
+
     function displayFinish(  eval ){
         divDisplayText = document.createElement("div");
         divDisplayText.id = "display_text";
@@ -275,6 +373,7 @@ display = (function() {
             if(eval['win'] == 1){
                 ttt.score.you += 1;
                 divDisplayText.textContent =  ttt.text[lang].you_win;
+                showSecret();
             }
             if(eval['win'] == -1){
                 ttt.score.cpu += 1;
@@ -289,11 +388,11 @@ display = (function() {
     }
 
     function startThink(){
-        var marginLeft = Math.floor((cols -  sizeLoader)/2);
+        var marginLeft = Math.floor( (cols - sizeLoader) * ticSize / 2 );
 
         anim = document.createElement("div");
         anim.id = "anim";
-        anim.style.marginLeft = marginLeft * ticSize +'px' ;
+        anim.style.marginLeft = marginLeft +'px' ;
 
         divThink.appendChild( anim );
         requestAnimationFrame(animate);
@@ -307,7 +406,9 @@ display = (function() {
     }
 
     function animate(time) {
-        var r = (sizeLoader * ticSize/2) * 0.8;
+        //keep the dot inside the strip whatever sizeLoader is (animSize = #anim in css)
+        var animSize = 10;
+        var r = Math.max( 0, (sizeLoader * ticSize - animSize) / 2 );
         anim.style.left = (r + Math.cos(time /30) * r) + "px";
         anim.style.top = ( r + Math.sin(time /30) * r) + "px";
 
@@ -321,7 +422,7 @@ display = (function() {
 
         var think = 0;
         var play_again = 0;
-        var worker = new Worker( ttt.path + 'scripts/do.work.js');
+        var worker = createEngine( ttt );
         worker.postMessage({cmd:'init', conf: ttt.action });
 
         worker.addEventListener('message', function(e) {
@@ -362,6 +463,7 @@ display = (function() {
             var lCanvas = createLevelCanvas( i );
             lCanvas.id = 'level_'+i;
             lCanvas.addEventListener("click", function(e){
+                hideSecret();
                 boardElement.removeChild(canvas);
                 divWrapLevel.removeChild(divLevel);
                 var level = parseInt( this.id.match( /\d+$/ ) );
@@ -388,6 +490,7 @@ display = (function() {
             if(  matrix[ticX][ticY] != 0 ){
                 return false;
             }
+            hideSecret();
             startThink();
             think = 1;
 
