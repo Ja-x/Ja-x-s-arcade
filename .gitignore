@@ -1,0 +1,2 @@
+# Claude Code per-user settings (machine/profile specific, not shared)
+**/.claude/settings.local.json
