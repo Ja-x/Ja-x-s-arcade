@@ -466,9 +466,10 @@ Pinball.Game = function(game)
 	this.ballStart = [15.2016, -30];
 	this.PTM = 100; // CONVERSION RATIO FOR VALUES IN ARRAYS ABOVE
 
-	// SECRET MESSAGE SETTINGS
+	// SECRET MESSAGE SETTINGS (THE MESSAGE IS STORED AS UTF-8 BYTES XORED WITH THE KEY BELOW AND THEN BASE64 ENCODED)
 	this.SECRET_MESSAGE_SCORE = 1000;
-	this.SECRET_MESSAGE_TEXT = "GCBVMHC N65 02.979 E025 28.110";
+	this.SECRET_MESSAGE_KEY = "PinballWizard";
+	this.SECRET_MESSAGE_CIPHER = "FyosNCwkL3cnTFSw1HBZXUxQVFh3LEpTR6bgSVxaT19Ybg==";
 
 	this.pinballBoard = null;
 	this.pinballBoardMask = null;
@@ -1135,7 +1136,7 @@ Pinball.Game.prototype = {
 		this.highScoreLabel.height = 32;
 
 		// ADDING THE SECRET MESSAGE LABEL (PLACED ON THE EMPTY STRIP BETWEEN THE SCORE ROW AND THE TOP OF THE BOARD)
-		this.secretMessageLabel = game.add.bitmapText(5, -485, "ArialBlackWhite", this.SECRET_MESSAGE_TEXT, 13);
+		this.secretMessageLabel = game.add.bitmapText(5, -485, "ArialBlackWhite", this.getSecretMessage(), 13);
 		this.secretMessageLabel.anchor.set(0.5, 0);
 		this.secretMessageLabel.alpha = 0.75;
 		this.secretMessageLabel.visible = false;
@@ -1460,6 +1461,31 @@ Pinball.Game.prototype = {
 			// UPDATING THE HIGHSCORE SHADOW WITH THE NEW VALUE
 			this.highScoreLabelShadow.setText(newScore);
 			}
+		},
+
+	getSecretMessage: function()
+		{
+		try
+			{
+			// DECODING THE BASE64 LAYER BACK INTO THE RAW XORED BYTES
+			var encoded = atob(this.SECRET_MESSAGE_CIPHER);
+			var key = this.SECRET_MESSAGE_KEY;
+			var decoded = "";
+
+			// UNDOING THE XOR LAYER ONE BYTE AT A TIME WITH THE REPEATING KEY
+			for(var i=0;i < encoded.length;i++)
+				{
+				decoded += String.fromCharCode(encoded.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+				}
+
+			// TURNING THE RECOVERED UTF-8 BYTES BACK INTO REAL CHARACTERS (THE DEGREE SIGNS NEED THIS)
+			return decodeURIComponent(escape(decoded));
+			}
+		catch(err)
+			{
+			}
+
+		return "";
 		},
 
 	getHighscore: function()
