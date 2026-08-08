@@ -1,2 +1,7 @@
 # Claude Code per-user settings (machine/profile specific, not shared)
 **/.claude/settings.local.json
+
+# ohflip (regularkid/ohflip, js13k 2019) - All Rights Reserved, (c) 2019 Bryan Perfetto.
+# Paikallinen klooni. Lupapyynta tekijalle lahetetty 2026-08-02, odottaa vastausta.
+# Ala poista tata ignorea ennen kuin lupa on saatu kirjallisena.
+ohflip/
