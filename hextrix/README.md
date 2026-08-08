@@ -1,11 +1,20 @@
-Hextris
+Geotrix
 ==========
 
 <img src="images/twitter-opengraph.png" width="100px"><br>
 
-An addictive puzzle game inspired by Tetris. Play it at [www.hextris.io](http://www.hextris.io), or [https://hextris.github.io/hextris](https://hextris.github.io/hextris).
+Geotrix is part of Ja-x's Arcade and the key to geocache mystery **GCBVZC6**.
+Score more than 999 points to earn the coordinates.
 
-By:
+> **Preview release.** The mystery solution is not in the game yet: passing 999
+> points shows a win message, but no coordinates are revealed.
+
+Geotrix is a modified version of [Hextris](https://github.com/hextris/hextris),
+released under the GPLv3 (see [LICENSE.md](LICENSE.md)). Changes made here:
+renamed to Geotrix, app store links and upstream score-reporting removed, and
+the GCBVZC6 mystery added.
+
+Original Hextris by:
  - Logan Engstrom ([@lengstrom](http://loganengstrom.com/))
  - Garrett Finucane ([@garrettdreyfus](http://github.com/garrettdreyfus))
  - Noah Moroze ([@nmoroze](http://github.com/nmoroze))

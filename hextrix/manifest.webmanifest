@@ -1,11 +1,10 @@
 {
-	"name": "Hextris",
-	"id": "hextris.io",
+	"name": "Geotrix",
 	"scope": ".",
 	"start_url": ".",
 	"display": "standalone",
 	"background_color": "#ecf0f1",
-	"description": "An addictive puzzle game inspired by Tetris.",
+	"description": "Geotrix - a puzzle game and the key to geocache mystery GCBVZC6.",
 	"icons": [{
         "src": "images/icons/transparent-192.png",
         "sizes": "192x192",

@@ -494,25 +494,122 @@ body {
 	bottom:0px;
 }
 
-#androidBadge {
-	position:absolute;
-	height:41px;
-	margin-top:5px;
-	left:calc(50% - 66px);
-	transform:translate(calc(-50% - 4px), -1px);
-	-webkit-transform:translate(calc(-50% - 4px), -1px);
-	-moz-transform:translate(calc(-50% - 4px), -1px);
-	-ms-transform:translate(calc(-50% - 4px), -1px);
+/* Geocache mystery code, always visible in the top right corner. */
+#gcCode {
+	position:fixed;
+	top:10px;
+	right:14px;
+	z-index:99;
+	text-align:right;
+	font-family:Exo;
+	color:#2c3e50;
+	/* Purely decorative: never swallow a tap meant for the hexagon or a button. */
+	pointer-events:none;
 }
 
-#iOSBadge {
-	margin-top:5px;
-	position:absolute;
-	left:calc(50% + 65px);
-	transform:translate(calc(-50% - 4px), 0%);
-	-webkit-transform:translate(calc(-50% - 4px), 0%);
-	-moz-transform:translate(calc(-50% - 4px), 0%);
-	-ms-transform:translate(calc(-50% - 4px), 0%);
+#gcCodeLabel {
+	color:#bdc3c7;
+	font-size:12px;
+	letter-spacing:1px;
+}
+
+#gcCodeValue {
+	font-size:22px;
+	font-weight:bold;
+	margin-top:-3px;
+}
+
+/* The badge is anchored to the right edge, HIGH SCORE is centred and 200px
+   wide, so the two collide once the viewport drops below ~485px. On narrow
+   screens the badge moves under HIGH SCORE instead, where nothing else sits. */
+@media only screen and (max-width:520px) {
+	#gcCode {
+		top:70px;
+		right:auto;
+		left:0;
+		width:100%;
+		text-align:center;
+	}
+
+	#gcCodeLabel {
+		font-size:10px;
+	}
+
+	#gcCodeValue {
+		font-size:17px;
+		margin-top:-1px;
+	}
+}
+
+/* Language toggle on the help screen. */
+#langFlag {
+	position:fixed;
+	top:22px;
+	right:22px;
+	z-index:3002;
+	width:38px;
+	cursor:pointer;
+	line-height:0;
+	border:1px solid #bdc3c7;
+	opacity:0.85;
+}
+
+#langFlag:hover {
+	opacity:1;
+}
+
+#langFlag svg {
+	display:block;
+	width:100%;
+	height:auto;
+}
+
+#arcadeLink {
+	display:block;
+	margin:10px auto 0 auto;
+	padding:9px 0;
+	width:100%;
+	box-sizing:border-box;
+	background-color:#2c3e50;
+	color:#ecf0f1;
+	font-family:Exo;
+	font-size:13px;
+	font-weight:bold;
+	letter-spacing:1px;
+	text-align:center;
+	text-decoration:none;
+	text-transform:uppercase;
+	border-radius:2px;
+	cursor:pointer;
+}
+
+#arcadeLink:hover {
+	background-color:#34495e;
+}
+
+#gameOverMessage {
+	font-family:Exo;
+	font-weight:bold;
+	font-size:19px;
+	line-height:22px;
+	max-width:300px;
+	margin:0 auto 4px auto;
+}
+
+#gameOverMessage.won {
+	color:#2ecc71;
+}
+
+#gameOverMessage.lost {
+	color:#e74c3c;
+}
+
+#gameOverGcCode {
+	font-family:Exo;
+	font-size:14px;
+	letter-spacing:1px;
+	color:#7f8c8d;
+	margin-bottom:10px;
 }
 
 #authors {

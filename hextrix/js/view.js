@@ -41,12 +41,12 @@ function drawScoreboard() {
     var h = trueCanvas.height / 2 + gdy + 100 * settings.scale;
 	if (gameState === 0) {
 		renderText(trueCanvas.width / 2 + gdx + 6 * settings.scale, trueCanvas.height / 2 + gdy, 60, "rgb(236, 240, 241)", String.fromCharCode("0xf04b"), 'px FontAwesome');
-		renderText(trueCanvas.width / 2 + gdx + 6 * settings.scale, trueCanvas.height / 2.1 + gdy - 155 * settings.scale, 150, "#2c3e50", "Hextris");
+		renderText(trueCanvas.width / 2 + gdx + 6 * settings.scale, trueCanvas.height / 2.1 + gdy - 155 * settings.scale, 150, "#2c3e50", "Geotrix");
 		renderText(trueCanvas.width / 2 + gdx + 5 * settings.scale, h + 10, fontSize, "rgb(44,62,80)", 'Play!');
 	} else if (gameState != 0 && textOpacity > 0) {
 		textOpacity -= 0.05;
 		renderText(trueCanvas.width / 2 + gdx + 6 * settings.scale, trueCanvas.height / 2 + gdy, 60, "rgb(236, 240, 241)", String.fromCharCode("0xf04b"), 'px FontAwesome');
-		renderText(trueCanvas.width / 2 + gdx + 6 * settings.scale, trueCanvas.height / 2 + gdy - 155 * settings.scale, 150, "#2c3e50", "Hextris");
+		renderText(trueCanvas.width / 2 + gdx + 6 * settings.scale, trueCanvas.height / 2 + gdy - 155 * settings.scale, 150, "#2c3e50", "Geotrix");
 		renderText(trueCanvas.width / 2 + gdx + 5 * settings.scale, h, fontSize, "rgb(44,62,80)", 'Play!');
 		ctx.globalAlpha = scoreOpacity;
 		renderText(trueCanvas.width / 2 + gdx, trueCanvas.height / 2 + gdy, scoreSize, color, score);
@@ -96,21 +96,8 @@ function toggleClass(element, active) {
 function showText(text) {
 	var messages = {
 		'paused': "<div class='centeredHeader unselectable'>Game Paused</div>",
-		'pausedAndroid': "<div class='centeredHeader unselectable'>Game Paused</div><div class='unselectable centeredSubHeader' style='position:absolute;margin-left:-150px;left:50%;margin-top:20px;width:300px;font-size:16px;'><a href = 'https://play.google.com/store/apps/details?id=com.hextris.hextrisadfree' target='_blank'Want to support the developers? Don't like ads? Tap for Hextris ad-free!</a></div>",
-		'pausediOS': "<div class='centeredHeader unselectable'>Game Paused</div><div class='unselectable centeredSubHeader' style='position:absolute;margin-left:-150px;left:50%;margin-top:20px;width:300px;font-size:16px;'><a href = 'https://itunes.apple.com/us/app/hextris-ad-free/id912895524?mt=8' target='_blank'>Want to support the developers? Don't like ads? Tap for Hextris ad-free!</a></div>",
-		'pausedOther': "<div class='centeredHeader unselectable'>Game Paused</div><div class='unselectable centeredSubHeader' style='margin-top:10px;position:absolute;left:50%;margin-left:-190px;max-width:380px;font-size:18px;'><a href = 'http://hextris.github.io/' target='_blank'>Want to support the developers? Click here to buy one of the ad-free mobile versions!</a></div>",
 		'start': "<div class='centeredHeader unselectable' style='line-height:80px;'>Press enter to start</div>"
 	};
-
-	if (text == 'paused') {
-		if (settings.os == 'android') {
-			text = 'pausedAndroid'
-		} else if (settings.os == 'ios') {
-            text = 'pausediOS'
-        } else if (settings.platform == 'nonmobile') {
-            text = 'pausedOther'
-        }
-	}
 
 	if (text == 'gameover') {
 	   //Clay('client.share.any', {text: 'Think you can beat my score of '+ score + ' in Super Cool Game?'})
@@ -141,12 +128,47 @@ function hideText() {
 	})
 }
 
+// Score needed to earn the geocache coordinates for GCBVZC6.
+var WINNING_SCORE = 999;
+var GC_CODE = "GCBVZC6";
+// Public addresses used by the share buttons. Update these two if the game
+// moves to a different folder or domain.
+var GAME_URL = "https://ja-x.github.io/Ja-x-s-arcade/hextrix/";
+var ARCADE_URL = "https://ja-x.github.io/Ja-x-s-arcade";
+
+function tweetIntentUrl(text) {
+	return "https://twitter.com/intent/tweet" +
+		"?text=" + encodeURIComponent(text) +
+		"&url=" + encodeURIComponent(GAME_URL) +
+		"&hashtags=" + encodeURIComponent(GC_CODE);
+}
+
+function openSharePopup(url) {
+	window.open(url, "geotrixShare", "width=600,height=500");
+}
+
+// The share links in the markup are placeholders; they are built here so the
+// text and the URLs stay in one place and get properly encoded.
+function initShareLinks() {
+	$(".rrssb-facebook a").attr("href",
+		"https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(GAME_URL));
+	$(".rrssb-twitter a").attr("href",
+		tweetIntentUrl("Play Geotrix and try to crack the geocache mystery!"));
+	$("#arcadeLink").attr("href", ARCADE_URL);
+
+	$("#socialShare").on("click", function() {
+		openSharePopup(tweetIntentUrl(
+			"I scored " + score + " points in Geotrix! Can you beat that and crack the mystery?"));
+	});
+}
+
 function gameOverDisplay() {
 	settings.ending_block=false;
 	Cookies.set("visited",true);
 	var c = document.getElementById("canvas");
 	c.className = "blur";
 	updateHighScores();
+	showGameOverMessage();
 	if (highscores.length === 0 ){
 		$("#currentHighScore").text(0);
 	}
@@ -159,6 +181,14 @@ function gameOverDisplay() {
 	$("#socialShare").fadeIn();
 	$("#restart").fadeIn();
     set_score_pos();
+}
+
+function showGameOverMessage() {
+	var won = score > WINNING_SCORE;
+	$("#gameOverMessage")
+		.text(won ? "You won - have some cake!" : "You failed to gain the coordinates - sorry!")
+		.toggleClass("won", won)
+		.toggleClass("lost", !won);
 }
 
 function updateHighScores (){

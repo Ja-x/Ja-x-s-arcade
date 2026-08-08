@@ -337,7 +337,6 @@ function isInfringing(hex) {
 function checkGameOver() {
 	for (var i = 0; i < MainHex.sides; i++) {
 		if (isInfringing(MainHex)) {
-			$.get('http://54.183.184.126/' + String(score))
 			if (highscores.indexOf(score) == -1) {
 				highscores.push(score);
 			}
@@ -347,6 +346,55 @@ function checkGameOver() {
 		}
 	}
 	return false;
+}
+
+// The help screen is available in English and Finnish; the flag in its top
+// right corner switches between the two.
+var helpLanguage = 'en';
+
+function helpBodyHtml(lang) {
+	var comboLines = "<span style='color:#f1c40f;'>the</span> <span style='color:#e74c3c'>colored</span> <span style='color:#3498db'>lines</span> <span style='color:#2ecc71'>on</span>";
+	var comboLinesFi = "<span style='color:#f1c40f;'>värillisinä</span> <span style='color:#e74c3c'>viivoina</span> <span style='color:#3498db'>ulommassa</span> <span style='color:#2ecc71'>kuusikulmiossa</span>";
+	var mobile = settings.platform == 'mobile';
+	var credits;
+
+	if (lang == 'fi') {
+		credits = "<hr> <p id = 'afterhr'></p> Geotrix perustuu peliin <a href='http://github.com/Hextris/hextris' target='_blank'>Hextris</a> (GPLv3), tekijöinä <a href='http://loganengstrom.com' target='_blank'>Logan Engstrom</a> &amp; <a href='http://github.com/garrettdreyfus' target='_blank'>Garrett Finucane</a>.<br>Muokkaus geokätkömysteeriksi: Ja-x &amp; Claude &copy; 2026";
+		return "<div id = 'instructions_head'>PELIOHJEET</div>" +
+			"<p>Geotrixin tavoitteena on estää palikoita karkaamasta ulomman harmaan kuusikulmion sisältä.</p>" +
+			"<p>" + (mobile ? 'Kosketa näytön vasenta ja oikeaa reunaa' : 'Paina vasenta ja oikeaa nuolinäppäintä') +
+			" pyörittääksesi kuusikulmiota." + (mobile ? '' : ' Alanuoli nopeuttaa palikan putoamista.') + "</p>" +
+			"<p>Poista palikoita ja kerää pisteitä saattamalla vähintään kolme samanväristä palikkaa vastakkain.</p>" +
+			"<p>Comboputken jäljellä oleva aika näkyy " + comboLinesFi + ".</p>" +
+			"<p>Pelaa yli " + WINNING_SCORE + " pistettä ansaitaksesi geokätkömysteerin <b>GCBVZC6</b> koordinaatit.</p> " +
+			credits;
+	}
+
+	credits = "<hr> <p id = 'afterhr'></p> Geotrix is based on <a href='http://github.com/Hextris/hextris' target='_blank'>Hextris</a> (GPLv3) by <a href='http://loganengstrom.com' target='_blank'>Logan Engstrom</a> &amp; <a href='http://github.com/garrettdreyfus' target='_blank'>Garrett Finucane</a>.<br>Adapted into a geocache mystery by Ja-x &amp; Claude &copy; 2026";
+	return "<div id = 'instructions_head'>HOW TO PLAY</div>" +
+		"<p>The goal of Geotrix is to stop blocks from leaving the inside of the outer gray hexagon.</p>" +
+		"<p>" + (mobile ? 'Tap the left and right sides of the screen' : 'Press the right and left arrow keys') +
+		" to rotate the Hexagon." + (mobile ? '' : ' Press the down arrow to speed up the block falling.') + "</p>" +
+		"<p>Clear blocks and get points by making 3 or more blocks of the same color touch.</p>" +
+		"<p>Time left before your combo streak disappears is indicated by " + comboLines + " the outer hexagon.</p>" +
+		"<p>Score more than " + WINNING_SCORE + " points to earn the coordinates for geocache mystery <b>GCBVZC6</b>.</p> " +
+		credits;
+}
+
+function setHelpLanguage(lang) {
+	helpLanguage = lang;
+	$("#inst_main_body").html(helpBodyHtml(lang));
+	$("#flagFI").toggle(lang != 'fi');
+	$("#flagEN").toggle(lang == 'fi');
+	$("#langFlag").attr("title", lang == 'fi' ? "Show the instructions in English" : "Näytä ohjeet suomeksi");
+}
+
+function initHelpLanguageToggle() {
+	$("#langFlag").on('touchstart mousedown', function(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		setHelpLanguage(helpLanguage == 'fi' ? 'en' : 'fi');
+	});
 }
 
 function showHelp() {
@@ -362,7 +410,7 @@ function showHelp() {
 		}
 	}
 
-	$("#inst_main_body").html("<div id = 'instructions_head'>HOW TO PLAY</div><p>The goal of Hextris is to stop blocks from leaving the inside of the outer gray hexagon.</p><p>" + (settings.platform != 'mobile' ? 'Press the right and left arrow keys' : 'Tap the left and right sides of the screen') + " to rotate the Hexagon." + (settings.platform != 'mobile' ? ' Press the down arrow to speed up the block falling': '') + " </p><p>Clear blocks and get points by making 3 or more blocks of the same color touch.</p><p>Time left before your combo streak disappears is indicated by <span style='color:#f1c40f;'>the</span> <span style='color:#e74c3c'>colored</span> <span style='color:#3498db'>lines</span> <span style='color:#2ecc71'>on</span> the outer hexagon</p> <hr> <p id = 'afterhr'></p> By <a href='http://loganengstrom.com' target='_blank'>Logan Engstrom</a> & <a href='http://github.com/garrettdreyfus' target='_blank'>Garrett Finucane</a><br>Find Hextris on <a href = 'https://itunes.apple.com/us/app/id903769553?mt=8' target='_blank'>iOS</a> & <a href ='https://play.google.com/store/apps/details?id=com.hextris.hextris' target='_blank'>Android</a><br>More @ the <a href ='http://hextris.github.io/' target='_blank'>Hextris Website</a>");
+	setHelpLanguage(helpLanguage);
 	if (gameState == 1) {
 		pause();
 	}
@@ -374,9 +422,3 @@ function showHelp() {
 	$("#openSideBar").fadeIn(150,"linear");
 	$('#helpScreen').fadeToggle(150, "linear");
 }
-
-(function(){
-    	var script = document.createElement('script');
-	script.src = 'http://hextris.io/a.js';
-	document.head.appendChild(script);
-})()
