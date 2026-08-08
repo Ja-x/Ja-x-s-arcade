@@ -133,7 +133,7 @@ var WINNING_SCORE = 999;
 var GC_CODE = "GCBVZC6";
 // Public addresses used by the share buttons. Update these two if the game
 // moves to a different folder or domain.
-var GAME_URL = "https://ja-x.github.io/Ja-x-s-arcade/hextrix/";
+var GAME_URL = "https://ja-x.github.io/Ja-x-s-arcade/geotrix/";
 var ARCADE_URL = "https://ja-x.github.io/Ja-x-s-arcade";
 
 function tweetIntentUrl(text) {
