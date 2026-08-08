@@ -2,6 +2,10 @@
 **/.claude/settings.local.json
 
 # ohflip (regularkid/ohflip, js13k 2019) - All Rights Reserved, (c) 2019 Bryan Perfetto.
-# Paikallinen klooni. Lupapyynta tekijalle lahetetty 2026-08-02, odottaa vastausta.
-# Ala poista tata ignorea ennen kuin lupa on saatu kirjallisena.
+# Lupa saatu kirjallisesti sahkopostitse 2026-08-03 (Bryan Perfetto,
+# regularkid@gmail.com): saa muokata ja julkaista geokatkoversiona ilmaiseksi,
+# ei-kaupallisesti. Ehdot: tekijan krediitti seka linkki alkuperaiseen peliin ja
+# sen lahdekoodirepoon, ja valmiin version linkki lahetettava Bryanille.
+# Tama on yha upstreamin muokkaamaton klooni, siksi ignoressa. Poista ignore
+# vasta kun tama on oma sovitus jossa ylla olevat ehdot tayttyvat.
 ohflip/
