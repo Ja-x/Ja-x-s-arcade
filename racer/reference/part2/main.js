@@ -49,8 +49,8 @@ class MainScene extends Phaser.Scene
 	* Loads all assets.
 	*/
 	preload(){
-		this.load.image('imgBack', '../assets/img_back.png');
-		this.load.image('imgPlayer', '../assets/img_player.png');
+		this.load.image('imgBack', '../../assets/img_back.png');
+		this.load.image('imgPlayer', '../../assets/img_player.png');
 	}
 
 	/**
