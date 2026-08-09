@@ -39,6 +39,12 @@ class Player
 		// collisions
 		this.crashTimer = 0;					// counts down the post-crash immunity
 		this.justCrashed = false;				// set for one frame on impact
+
+		// appearance
+		this.brakeLights   = true;				// lit whenever the throttle is closed
+		this.hairTimer     = 0;					// runs the driver's hair animation
+		this.hairFrame     = 0;
+		this.appearanceKey = null;				// texture the sprite is currently showing
 	}
 
 	/**
@@ -82,6 +88,27 @@ class Player
 
 		this.crashTimer = 0;
 		this.justCrashed = false;
+
+		this.brakeLights = true;
+		this.hairTimer   = 0;
+		this.hairFrame   = 0;
+	}
+
+	/**
+	* Points the sprite at the car picture that matches the current brake light and hair
+	* state. Every combination was drawn once at boot, so this is only a texture swap.
+	*/
+	applyAppearance(){
+		var key = Artwork.playerKey(this.brakeLights, this.hairFrame);
+
+		if (key === this.appearanceKey) return;
+
+		this.appearanceKey = key;
+
+		// setTexture resets the frame, so the placement has to be applied again
+		this.sprite.setTexture(key);
+		this.sprite.setOrigin(0.5, 1);
+		this.sprite.setDisplaySize(this.screen.w, this.screen.h);
 	}
 
 	/**
@@ -177,6 +204,22 @@ class Player
 		else if (moved > 0){
 			this.checkTrafficCollision(startZ, moved);
 		}
+
+		// ---------------------------------------------------------------------------------
+		// Appearance
+		// ---------------------------------------------------------------------------------
+
+		// the brake lights are out only while the throttle is held down
+		this.brakeLights = !controls.accel;
+
+		// the driver's hair only moves while the car is actually going somewhere, and it
+		// flutters faster the quicker the car is travelling
+		if (this.speed > this.maxSpeed*0.02){
+			this.hairTimer += dt * (5 + 16 * (this.speed / this.maxSpeed));
+			this.hairFrame  = Math.floor(this.hairTimer) % Artwork.hairFrames;
+		}
+
+		this.applyAppearance();
 	}
 
 	/**

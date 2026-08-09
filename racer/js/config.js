@@ -102,15 +102,18 @@ const CONFIG = {
 	// ---------------------------------------------------------------------------------
 	// Parallax background scroll speeds
 	// ---------------------------------------------------------------------------------
-	// The layers are 2560 x 720 pictures scaled down to the given screen height and
+	// The layers are drawn by artwork.js, scaled down to the given screen height and
 	// tiled sideways. The nearer the layer, the faster it scrolls.
+	//
+	// The heights also decide how much of each layer stays uncovered: the town is kept
+	// low so that all three mountain ranges behind it remain visible.
 	background: {
 		horizon: 552,			// screen Y where the background layers rest
 
 		layers: [
 			{key: 'imgSky',   height: 430, speed: 0.7},
 			{key: 'imgHills', height: 250, speed: 2.6},
-			{key: 'imgCity',  height: 170, speed: 5.0}
+			{key: 'imgCity',  height: 140, speed: 5.0}
 		]
 	}
 };

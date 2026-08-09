@@ -40,25 +40,12 @@ class MainScene extends Phaser.Scene
 	}
 
 	/**
-	* Loads all assets.
+	* Builds all artwork. Nothing is loaded from disk: every texture is drawn into a
+	* canvas by artwork.js, which keeps the game to plain files and lets the pictures
+	* be as detailed as the drawing code cares to make them.
 	*/
 	preload(){
-		this.load.image('imgBack',   'assets/img_back.png');
-		this.load.image('imgSky',    'assets/img_sky.png');
-		this.load.image('imgHills',  'assets/img_hills.png');
-		this.load.image('imgCity',   'assets/img_city.png');
-		this.load.image('imgPlayer', 'assets/img_player.png');
-
-		// the sprite sheets have no atlas file, the frames are described in sprites.js
-		for (var key in SPRITE_SHEETS){
-			var sheet = SPRITE_SHEETS[key];
-
-			this.load.spritesheet(key, 'assets/' + sheet.file, {
-				frameWidth:  sheet.frameWidth,
-				frameHeight: sheet.frameHeight,
-				spacing:     sheet.spacing
-			});
-		}
+		Artwork.generate(this);
 	}
 
 	/**
@@ -71,13 +58,13 @@ class MainScene extends Phaser.Scene
 		// source images that are "manually" drawn on a rendering texture
 		// (that's why they must be invisible after creation)
 		this.sprites = {};
-		this.sprites.PLAYER = this.add.image(0, 0, 'imgPlayer').setVisible(false);
+		this.sprites.PLAYER = this.add.image(0, 0, Artwork.playerKey(true, 0)).setVisible(false);
 
 		for (var name in SPRITES){
 			var source = SPRITES[name];
 			if (!source || !source.key) continue;		// skip the grouping arrays
 
-			this.sprites[name] = this.add.image(0, 0, source.key, source.frame).setVisible(false);
+			this.sprites[name] = this.add.image(0, 0, source.key).setVisible(false);
 		}
 
 		// instances
