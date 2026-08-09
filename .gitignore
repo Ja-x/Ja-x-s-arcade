@@ -9,3 +9,6 @@
 # Tama on yha upstreamin muokkaamaton klooni, siksi ignoressa. Poista ignore
 # vasta kun tama on oma sovitus jossa ylla olevat ehdot tayttyvat.
 ohflip/
+
+# Racerin sisainen jatkokehitysohje - ei julkaista arcaden repossa
+racer/Ja-x's Arcade Racer -pelin jatkokehitysohje.md
