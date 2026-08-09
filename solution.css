@@ -45,6 +45,15 @@ h1 {
   padding: 2rem;
 }
 
+/* Rivi jolla on vain yksi kortti: pidetään kortti saman levyisenä kuin
+   kahden kortin riveillä, ettei se veny koko ruudun levyiseksi.
+   Kapeilla näytöillä kortti saa taas täyden leveyden. */
+@media (min-width: 736px) {
+  .row--single .card {
+    max-width: calc(50% - 1rem);
+  }
+}
+
 .card {
   background: #fff;
   border-radius: 20px;

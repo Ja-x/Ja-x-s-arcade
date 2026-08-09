@@ -129,8 +129,26 @@ function hideText() {
 }
 
 // Score needed to earn the geocache coordinates for GCBVZC6.
-var WINNING_SCORE = 999;
+var WINNING_SCORE = 2999;
 var GC_CODE = "GCBVZC6";
+// The winning message holds the cache coordinates, so it is XOR'd with GC_CODE
+// and Base64-encoded instead of sitting in the source as plain text. This only
+// keeps the answer out of sight of a casual reader - it is obfuscation, not
+// encryption, since the key ships with the game.
+var WIN_MESSAGE_CIPHER = "Hiw3di0sWGduYhhsdvT3Y3JldHQBc2MHZmh29PdjcGF0dwVx";
+var LOSE_MESSAGE = "You failed to gain the coordinates - sorry!";
+
+// Undoes the Base64 + XOR above. The escape/decodeURIComponent pair turns the
+// raw bytes back into UTF-8 text, which the degree signs in the coordinates
+// need to survive the round trip.
+function decodeMessage(cipher, key) {
+	var bytes = atob(cipher);
+	var out = "";
+	for (var i = 0; i < bytes.length; i++) {
+		out += String.fromCharCode(bytes.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+	}
+	return decodeURIComponent(escape(out));
+}
 // Public addresses used by the share buttons. Update these two if the game
 // moves to a different folder or domain.
 var GAME_URL = "https://ja-x.github.io/Ja-x-s-arcade/geotrix/";
@@ -186,7 +204,7 @@ function gameOverDisplay() {
 function showGameOverMessage() {
 	var won = score > WINNING_SCORE;
 	$("#gameOverMessage")
-		.text(won ? "You won - have some cake!" : "You failed to gain the coordinates - sorry!")
+		.text(won ? decodeMessage(WIN_MESSAGE_CIPHER, GC_CODE) : LOSE_MESSAGE)
 		.toggleClass("won", won)
 		.toggleClass("lost", !won);
 }

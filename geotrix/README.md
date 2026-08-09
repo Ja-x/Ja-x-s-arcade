@@ -4,10 +4,11 @@ Geotrix
 <img src="images/twitter-opengraph.png" width="100px"><br>
 
 Geotrix is part of Ja-x's Arcade and the key to geocache mystery **GCBVZC6**.
-Score more than 999 points to earn the coordinates.
+Score more than 2999 points to earn the coordinates.
 
-> **Preview release.** The mystery solution is not in the game yet: passing 999
-> points shows a win message, but no coordinates are revealed.
+Passing 2999 points reveals the coordinates in the game over message. They are
+stored XOR'd and Base64-encoded in `js/view.js` so they are not visible to
+someone just skimming the source.
 
 Geotrix is a modified version of [Hextris](https://github.com/hextris/hextris),
 released under the GPLv3 (see [LICENSE.md](LICENSE.md)). Changes made here:
