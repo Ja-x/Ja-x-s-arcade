@@ -86,6 +86,13 @@ h1 {
   line-height: 1.6;
 }
 
+/* Pieni GoatCounter-pelikertojen laskuri kortin alalaidassa. */
+.play-count {
+  margin: auto 1rem 1.25rem;
+  font-size: 0.85rem;
+  color: #777;
+}
+
 footer {
   text-align: center;
   padding: 1.5rem;

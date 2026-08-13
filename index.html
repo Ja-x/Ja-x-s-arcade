@@ -81,6 +81,7 @@
 	<a href="./pinball/PinballGame.htm"><img class="tile-image" src="./assets/images/flipperi.png" alt="Pallolla purkille - Flipperi"></a>
       <h2 class="card-title"> GCBVMHC - Pallolla purkille - Flipperi</h2>
       <p class="card-text">Built fully by someone else, a nice pinball game. Enjoy! </p>
+      <p class="play-count"><span id="pinball-play-count">...</span> plays</p>
     </div>
  </div>
 
@@ -91,6 +92,7 @@
 	<a href="https://ja-x.github.io/Ja-x-s-arcade/geotrix/"><img class="tile-image" src="./assets/images/geotrix.png" alt="Geotrix"></a>
       <h2 class="card-title"> GCBVZC6 - Geotrix</h2>
       <p class="card-text">Built fully by myself, a fast paced puzzle game. Score high enough and the mystery reveals itself. Enjoy! </p>
+      <p class="play-count"><span id="geotrix-play-count">...</span> plays</p>
     </div>
     -->
 
@@ -105,6 +107,45 @@
     <p>© Ja-x 2026, Play, create, develop, design, and learn - for fun!</p>
     <p>Last edited 8.8.2026</p>
   </footer>
+
+<script>
+  // GoatCounterin julkinen kavijalaskuri (sama tili kuin pelisivujen
+  // count.js-skriptissa). Vaatii GoatCounterin asetuksista julkisen paasyn
+  // counter-rajapintaan, muuten kortissa nakyy vain viiva.
+  var GOATCOUNTER_SITE = 'https://jaxarcade.goatcounter.com';
+
+  // Yleiskayttoinen: hakee yhden polun kayntimaaran ja kirjoittaa sen elementtiin.
+  // Jos laskuria ei saada, naytetaan em-viiva eika muu sivu hairiinny.
+  function loadPlayCount(elementId, path) {
+    var element = document.getElementById(elementId);
+    if (!element) {
+      return;
+    }
+    if (!window.fetch) {
+      element.textContent = '—';
+      return;
+    }
+    fetch(GOATCOUNTER_SITE + '/counter/' + encodeURIComponent(path) + '.json')
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error('Counter request failed');
+        }
+        return response.json();
+      })
+      .then(function (data) {
+        element.textContent = (data && data.count != null) ? data.count : '—';
+      })
+      .catch(function () {
+        element.textContent = '—';
+      });
+  }
+
+  loadPlayCount('pinball-play-count', '/Ja-x-s-arcade/pinball/PinballGame.htm');
+
+  // Valmiina Geotrixin julkaisua varten - pura kommentti samalla kun
+  // Geotrix-kortti julkaistaan ylla.
+  // loadPlayCount('geotrix-play-count', '/Ja-x-s-arcade/geotrix/');
+</script>
 </body>
 
 </html>

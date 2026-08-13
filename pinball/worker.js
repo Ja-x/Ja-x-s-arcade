@@ -10,13 +10,27 @@ const filesToCache = [
 	"PinballShare.png"
 ];
 
-const staticCacheName = "Pinball-v1";
+const staticCacheName = "Pinball-v2";
 
 self.addEventListener("install", event => {
 	event.waitUntil(
 		caches.open(staticCacheName)
 		.then(cache => {
 			return cache.addAll(filesToCache);
+		})
+	);
+});
+
+self.addEventListener("activate", event => {
+	// Siivotaan vanhat versiot pois. Ilman tata haku osuisi yha vanhaan
+	// valimuistiin, koska caches.match() etsii kaikista valimuisteista.
+	event.waitUntil(
+		caches.keys()
+		.then(names => {
+			return Promise.all(
+				names.filter(name => name.startsWith("Pinball-") && name !== staticCacheName)
+				.map(name => caches.delete(name))
+			);
 		})
 	);
 });
