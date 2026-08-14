@@ -90,11 +90,25 @@ window.TowerGame = (option = {}) => {
   }
 
   game.playBgm = () => {
-    game.playAudio('bgm', true)
+    const bgm = game.getAudio('bgm')
+    // native looping, so repeated calls don't stack up 'ended' listeners
+    if (bgm) bgm.loop = true
+    game.playAudio('bgm')
   }
 
   game.pauseBgm = () => {
     game.pauseAudio('bgm')
+  }
+
+  // audio assets are only loaded when soundOn is true at init,
+  // so muting is done at runtime through the same flag
+  game.setSoundOn = (on) => {
+    game.soundOn = !!on
+    if (game.soundOn) {
+      game.playBgm()
+    } else {
+      game.pauseBgm()
+    }
   }
 
   game.start = () => {

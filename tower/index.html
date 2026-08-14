@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,minimal-ui"><title>Tower Building</title><link rel="icon" type="image/x-icon" href="./assets/favicon.png"><style>*{margin:0;padding:0}img{width:100%}html{background:#fff;height:100%}body{font-family:"Helvetica Neue",Arial,Helvetica,sans-serif;margin:0 auto;text-align:center;width:100%;height:100%;background:#f95240 url(assets/main-bg.png)}@media screen and (min-height:560px){html{font-size:100px}}@media screen and (min-height:640px){html{font-size:112.5px}}@media screen and (min-height:720px){html{font-size:125px}}@media screen and (min-height:800px){html{font-size:137.5px}}@media screen and (min-height:880px){html{font-size:150px}}@media screen and (min-height:960px){html{font-size:162.5px}}@media screen and (min-height:1040px){html{font-size:180px}}@media screen and (min-height:1200px){html{font-size:200px}}html{font-size:17.6vh}#canvas{position:fixed;left:0;top:0;right:0;bottom:0;margin:auto}a{text-decoration:none}li,ol,ul{list-style-type:none;padding:0;margin:0}.hide{display:none}.clear{clear:both}.loading{background-color:#f05a50;height:100%;width:100%}.loading .main{width:60%;margin:0 auto;color:#fff}.loading .main img{width:60%;margin:1rem auto 0}.loading .main .title{font-size:.3rem}.loading .main .text{font-size:.15rem}.loading .main .bar{height:.12rem;width:100%;border:3px solid #fff;border-radius:.6rem;margin:.1rem 0}.loading .main .bar .sub{height:.1rem;width:98%;margin:.008rem auto 0}.loading .main .bar .percent{height:100%;width:0;background-color:#fff;border-radius:.6rem}.loading .logo{position:absolute;bottom:.3rem;left:0;right:0}.loading .logo img{width:1rem}.content{height:100vh;margin:0 auto;position:relative}.landing .title{width:60%}.landing .logo{width:30%;position:absolute;right:.2rem;top:.2rem}.landing .action-2{position:absolute;bottom:.2rem;width:100%}.landing .start{width:65%}.slideTop{-webkit-animation:st 1s ease-in-out;animation:st 1s ease-in-out}@-webkit-keyframes st{0%{transform:translateZ(0)}100%{transform:translate3d(0,-100%,0)}}@keyframes st{0%{transform:translateZ(0)}100%{transform:translate3d(0,-100%,0)}}.slideBottom{-webkit-animation:sb 1s ease-in-out;animation:sb 1s ease-in-out}@-webkit-keyframes sb{0%{transform:translateZ(0)}100%{transform:translate3d(0,200%,0)}}@keyframes sb{0%{transform:translateZ(0)}100%{transform:translate3d(0,200%,0)}}.swing{-webkit-animation:sw 2s ease-in-out alternate infinite;animation:sw 2s ease-in-out alternate infinite}@-webkit-keyframes sw{0%{transform:rotate(5deg);transform-origin:top center}100%{transform:rotate(-5deg);transform-origin:top center}}@keyframes sw{0%{transform:rotate(5deg);transform-origin:top center}100%{transform:rotate(-5deg);transform-origin:top center}}.modal .mask{background-color:#000;opacity:.6;position:fixed;height:100%;width:100%;top:0;left:0}.modal .modal-content{position:fixed;height:100%;width:90%;margin-top:.3rem;top:0}.modal .main{width:85%;margin:0 auto}.modal .container{position:relative}.modal .bg{width:100%;position:absolute;top:0;left:0}.modal .modal-main{width:100%;position:absolute;top:0;left:0;margin-top:-.4rem}.modal .over-img{width:80%;margin:.8rem auto 0}.modal .over-score{margin-top:-.2rem;font-size:.5rem;color:#ff735c;text-shadow:-2px -2px 0 #fff,2px -2px 0 #fff,-2px 2px 0 #fff,2px 2px 0 #fff}.modal .tip{font-size:.16rem;color:#9b724e}.modal .over-button-b{width:70%;margin:.1rem auto 0}.wxShare{background:#000;position:absolute;top:0;left:0;width:100%;height:100%;z-index:11;opacity:.9}.wxShare img{width:50%;float:right;margin:10px 10px 0 0}@font-face{font-family:wenxue;src:url(assets/wenxue.eot);src:url(assets/wenxue.eot),url(assets/wenxue.woff),url(assets/wenxue.ttf),url(assets/wenxue.svg)}.font-wenxue{font-family:wenxue}</style></head><body><canvas id="canvas" class="hide"></canvas><div class="content"><div class="loading"><div class="main"><img src="./assets/main-loading.gif"><div class="progress"><div class="title font-wenxue">0%</div><div class="bar"><div class="sub"><div class="percent"></div></div></div><div class="text">Loading...</div></div></div></div><div class="landing hide"><div class="action-1"><img src="./assets/main-index-title.png" class="title swing"></div><div class="action-2"><img id="start" src="./assets/main-index-start.png" class="start"></div></div><div id="modal" class="modal hide"><div class="mask"></div><div class="js-modal-content modal-content"><div class="main"><div class="container"><img src="./assets/main-modal-bg.png" class="bg"><div class="modal-main"><div id="over-modal" class="hide js-modal-card"><img src="./assets/main-modal-over.png" class="over-img"><div id="score" class="over-score font-wenxue"></div><div id="over-zero" class="hide"><div class="tip"><p>Try Again!</p><img src="./assets/main-modal-again-b.png" class="over-button-b js-reload"><img src="./assets/main-modal-invite-b.png" class="over-button-b js-invite"></div></div></div></div></div></div></div></div><div class="wxShare hide"><img src="./assets/main-share-icon.png"></div></div><script src="./dist/main.js"></script><script src="./assets/zepto-1.1.6.min.js"></script><script>var domReady, loadFinish, canvasReady, loadError, gameStart, game, score, successCount
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,minimal-ui"><title>Tower Building</title><link rel="icon" type="image/x-icon" href="./assets/favicon.png"><style>*{margin:0;padding:0}img{width:100%}html{background:#fff;height:100%}body{font-family:"Helvetica Neue",Arial,Helvetica,sans-serif;margin:0 auto;text-align:center;width:100%;height:100%;background:#f95240 url(assets/main-bg.png)}@media screen and (min-height:560px){html{font-size:100px}}@media screen and (min-height:640px){html{font-size:112.5px}}@media screen and (min-height:720px){html{font-size:125px}}@media screen and (min-height:800px){html{font-size:137.5px}}@media screen and (min-height:880px){html{font-size:150px}}@media screen and (min-height:960px){html{font-size:162.5px}}@media screen and (min-height:1040px){html{font-size:180px}}@media screen and (min-height:1200px){html{font-size:200px}}html{font-size:17.6vh}#canvas{position:fixed;left:0;top:0;right:0;bottom:0;margin:auto}a{text-decoration:none}li,ol,ul{list-style-type:none;padding:0;margin:0}.hide{display:none}.clear{clear:both}.loading{background-color:#f05a50;height:100%;width:100%}.loading .main{width:60%;margin:0 auto;color:#fff}.loading .main img{width:60%;margin:1rem auto 0}.loading .main .title{font-size:.3rem}.loading .main .text{font-size:.15rem}.loading .main .bar{height:.12rem;width:100%;border:3px solid #fff;border-radius:.6rem;margin:.1rem 0}.loading .main .bar .sub{height:.1rem;width:98%;margin:.008rem auto 0}.loading .main .bar .percent{height:100%;width:0;background-color:#fff;border-radius:.6rem}.loading .logo{position:absolute;bottom:.3rem;left:0;right:0}.loading .logo img{width:1rem}.content{height:100vh;position:fixed;left:0;right:0;top:0;bottom:0;margin:auto}.landing .title{width:60%}.landing .logo{width:30%;position:absolute;right:.2rem;top:.2rem}.landing .action-2{position:absolute;bottom:.2rem;width:100%}.landing .start{width:65%}.slideTop{-webkit-animation:st 1s ease-in-out;animation:st 1s ease-in-out}@-webkit-keyframes st{0%{transform:translateZ(0)}100%{transform:translate3d(0,-100%,0)}}@keyframes st{0%{transform:translateZ(0)}100%{transform:translate3d(0,-100%,0)}}.slideBottom{-webkit-animation:sb 1s ease-in-out;animation:sb 1s ease-in-out}@-webkit-keyframes sb{0%{transform:translateZ(0)}100%{transform:translate3d(0,200%,0)}}@keyframes sb{0%{transform:translateZ(0)}100%{transform:translate3d(0,200%,0)}}.swing{-webkit-animation:sw 2s ease-in-out alternate infinite;animation:sw 2s ease-in-out alternate infinite}@-webkit-keyframes sw{0%{transform:rotate(5deg);transform-origin:top center}100%{transform:rotate(-5deg);transform-origin:top center}}@keyframes sw{0%{transform:rotate(5deg);transform-origin:top center}100%{transform:rotate(-5deg);transform-origin:top center}}.modal .mask{background-color:#000;opacity:.6;position:fixed;height:100%;width:100%;top:0;left:0}.modal .modal-content{position:absolute;height:100%;width:90%;margin-top:.3rem;top:0}.modal .main{width:85%;margin:0 auto}.modal .container{position:relative}.modal .bg{width:100%;position:absolute;top:0;left:0}.modal .modal-main{width:100%;position:absolute;top:0;left:0;margin-top:-.4rem}.modal .over-img{width:80%;margin:.8rem auto 0}.modal .over-score{margin-top:-.2rem;font-size:.5rem;color:#ff735c;text-shadow:-2px -2px 0 #fff,2px -2px 0 #fff,-2px 2px 0 #fff,2px 2px 0 #fff}.modal .tip{font-size:.16rem;color:#9b724e}.modal .over-button-b{width:70%;margin:.24rem auto 0}.modal .secret{display:none;margin:.09rem auto 0;padding:.035rem .09rem;border:.012rem dashed #9b724e;border-radius:.05rem;background:rgba(255,243,214,.92);color:#7a3d10;font-size:.115rem;font-weight:700;letter-spacing:.005rem;white-space:nowrap}.modal .secret.is-open{display:inline-block}@font-face{font-family:wenxue;src:url(assets/wenxue.eot);src:url(assets/wenxue.eot),url(assets/wenxue.woff),url(assets/wenxue.ttf),url(assets/wenxue.svg)}.font-wenxue{font-family:wenxue}.landing .action-1{padding-top:.1rem}.landing .hanger{line-height:0}.landing .hanger-hook{display:block;width:.09rem;margin:0 auto}.landing .hanger-rope{display:block;width:60%;margin:-.02rem auto 0}.landing .title-text{width:100%;margin:-.08rem auto 0}.landing .title-row{text-align:center;font-size:0;line-height:0}.landing .tl{display:inline-block;vertical-align:top;line-height:1;position:relative;font-family:wenxue,Impact,"Arial Black",Arial,sans-serif;letter-spacing:.02em;color:#7a3d10;-webkit-text-stroke:.08em #7a3d10;text-shadow:0 .06em 0 #b3611a,0 .115em 0 #7a3d10,0 .17em .1em rgba(0,0,0,.35)}.landing .tl::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;text-align:center;-webkit-text-stroke:0;background:linear-gradient(#fffbe0 0,#ffe873 36%,#ffcf2e 62%,#ffb92a 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}.landing .tl-1,.landing .tl-2{font-size:.52rem}.landing .tl-3{font-size:.2rem;margin-top:.04rem}.sound-toggle{display:inline-flex;align-items:center;justify-content:center;margin:.14rem auto 0;padding:.05rem .14rem;border:.02rem solid #7a3d10;border-radius:.5rem;background:#fff3d6;box-shadow:0 .03rem 0 #7a3d10;color:#7a3d10;font-size:.11rem;font-weight:700;letter-spacing:.01rem;cursor:pointer;-webkit-user-select:none;user-select:none}.sound-toggle:active{transform:translateY(.02rem);box-shadow:0 .01rem 0 #7a3d10}.sound-toggle .icon{width:.16rem;height:.16rem;margin-right:.06rem;fill:none;stroke:#7a3d10;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.sound-toggle .icon .body{fill:#7a3d10}.sound-toggle .off{display:none}.sound-toggle.is-off{background:#e6d3b3;color:#9b724e}.sound-toggle.is-off .icon{stroke:#9b724e}.sound-toggle.is-off .icon .body{fill:#9b724e}.sound-toggle.is-off .on{display:none}.sound-toggle.is-off .off{display:inline}</style></head><body><canvas id="canvas" class="hide"></canvas><div class="content"><div class="loading"><div class="main"><img src="./assets/main-loading.gif"><div class="progress"><div class="title font-wenxue">0%</div><div class="bar"><div class="sub"><div class="percent"></div></div></div><div class="text">Loading...</div></div></div></div><div class="landing hide"><div class="action-1"><div class="hanger swing"><img src="./assets/hook.png" class="hanger-hook"><img src="./assets/rope.png" class="hanger-rope"><div class="title-text"><div class="title-row"><span class="tl tl-1" data-text="GC">GC</span></div><div class="title-row"><span class="tl tl-2" data-text="BWAAF">BWAAF</span></div><div class="title-row"><span class="tl tl-3" data-text="Pilvenpiirtäjä">Pilvenpiirtäjä</span></div></div></div></div><div class="action-2"><img id="start" src="./assets/main-index-start.png" class="start"><div><div id="sound-toggle" class="sound-toggle"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path class="body" d="M4 9h4l5-4v14l-5-4H4z"/><g class="on"><path d="M16.5 9a4.5 4.5 0 0 1 0 6"/><path d="M19 6.5a8 8 0 0 1 0 11"/></g><g class="off"><path d="M17 9.5l5 5"/><path d="M22 9.5l-5 5"/></g></svg><span id="sound-text">SOUND ON</span></div></div></div></div><div id="modal" class="modal hide"><div class="mask"></div><div class="js-modal-content modal-content"><div class="main"><div class="container"><img src="./assets/main-modal-bg.png" class="bg"><div class="modal-main"><div id="over-modal" class="hide js-modal-card"><img src="./assets/main-modal-over.png" class="over-img"><div id="score" class="over-score font-wenxue"></div><div id="over-zero" class="hide"><div class="tip"><p>Try Again!</p><img src="./assets/main-modal-again-b.png" class="over-button-b js-reload"><div id="secret" class="secret">N65 00.123 E025 20.345</div></div></div></div></div></div></div></div></div></div><script src="./dist/main.js"></script><script src="./assets/zepto-1.1.6.min.js"></script><script>var domReady, loadFinish, canvasReady, loadError, gameStart, game, score, successCount
   // init window height and width
   var gameWidth = window.innerWidth
   var gameHeight = window.innerHeight
@@ -6,6 +6,12 @@
   if (gameHeight / gameWidth < ratio) {
     gameWidth = Math.ceil(gameHeight / ratio)
   }
+  // rem is 17.6vh in the stylesheet, so it keeps rescaling with the viewport while
+  // the canvas keeps the pixel size it was built with. At any zoom level other than
+  // the one the page was loaded at, the two drift apart. Locking rem to the same
+  // pixel basis as the canvas keeps every element in proportion to the game.
+  document.documentElement.style.fontSize = (gameHeight * 0.176) + 'px'
+
   $('.content').css({ "height": gameHeight + "px", "width": gameWidth + "px" })
   $('.js-modal-content').css({ "width": gameWidth + "px" })
 
@@ -17,6 +23,7 @@
       setTimeout(function () {
         $('.loading').hide()
         $('.landing').show()
+        fitSubtitle()
       }, 1000)
     }
   }
@@ -43,10 +50,37 @@
     })
   }
 
+  // the rope and the subtitle are sized to match the width of the main title line
+  function fitSubtitle() {
+    var wide = document.querySelector('.tl-2')
+    var sub = document.querySelector('.tl-3')
+    var rope = document.querySelector('.hanger-rope')
+    if (!wide || !sub) return
+    // offsetWidth ignores the swing rotation, getBoundingClientRect does not
+    var target = wide.offsetWidth
+    // landing is still hidden, nothing to measure yet
+    if (!target) return
+    if (rope) rope.style.width = target + 'px'
+    for (var i = 0; i < 4; i++) {
+      var current = sub.offsetWidth
+      if (!current) return
+      if (Math.abs(target - current) < 1) break
+      var size = parseFloat(window.getComputedStyle(sub).fontSize)
+      sub.style.fontSize = (size * target / current) + 'px'
+    }
+  }
+
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitSubtitle)
+  window.addEventListener('resize', fitSubtitle, false)
+
+  // the hidden hint is only revealed once the tower reaches this many floors
+  var secretFloors = 10
+
   function overShowOver() {
     $('#modal').show()
     $('#over-modal').show()
     $('#over-zero').show()
+    $('#secret').toggleClass('is-open', successCount >= secretFloors)
   }
 
   // game customization options
@@ -67,13 +101,43 @@
     }
   }
 
+  // sound on/off toggle, remembered across reloads
+  var soundStorageKey = 'tower-sound-on'
+  var soundOn = true
+
+  try {
+    // anything but an explicit 'off' means sound is on, so a fresh visitor gets sound
+    soundOn = window.localStorage.getItem(soundStorageKey) !== 'off'
+  } catch (e) {
+    // storage can be blocked (private mode, file://), keep the default
+  }
+
+  function updateSoundButton() {
+    $('#sound-toggle').toggleClass('is-off', !soundOn)
+    $('#sound-text').text(soundOn ? 'SOUND ON' : 'SOUND OFF')
+  }
+
+  updateSoundButton()
+
+  $('#sound-toggle').on('click', function () {
+    soundOn = !soundOn
+    if (game) game.setSoundOn(soundOn)
+    updateSoundButton()
+    try {
+      window.localStorage.setItem(soundStorageKey, soundOn ? 'on' : 'off')
+    } catch (e) {
+      // the setting just will not survive a reload
+    }
+  })
+
   // game init with option
   function gameReady() {
     game = TowerGame(option)
     game.load(function () {
       game.init()
       setTimeout(function () {
-        game.playBgm()
+        // starts the music, or keeps it muted if that was the stored choice
+        game.setSoundOn(soundOn)
       })
     }, updateLoading)
   }
@@ -108,16 +172,15 @@
     window.location.href = window.location.href + '?s=' + (+new Date())
   })
 
-  $('.js-invite').on('click', function () {
-    $('.wxShare').show()
-  })
-
-  $('.wxShare').on('click', function () {
-    $('.wxShare').hide()
-  })
-
   // listener
   window.addEventListener('load', function () {
     domReady = true
     hideLoading()
-  }, false);</script></body></html>
+  }, false);</script>
+		<!-- GoatCounter-kavijaseuranta (tili: jaxarcade). -->
+		<script
+			data-goatcounter="https://jaxarcade.goatcounter.com/count"
+			async
+			src="//gc.zgo.at/count.js">
+		</script>
+	</body></html>
