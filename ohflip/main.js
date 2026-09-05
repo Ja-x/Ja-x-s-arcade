@@ -737,9 +737,14 @@ function Unpack(data, seed)
     return new TextDecoder().decode(bytes);
 }
 
-// Start-screen popups. The game listens for mousedown/touchstart on document,
-// so every handler here has to stop the event before it reaches that listener -
-// otherwise opening or closing a popup would also make the player flip.
+// Popups. The game listens for mousedown/touchstart/touchend on document, so
+// every handler here has to stop the event before it reaches those listeners.
+// touchstart matters because otherwise pressing a button would also flip the
+// player. touchend matters for a subtler reason: the document handler calls
+// preventDefault on it, and a cancelled touchend stops the browser from
+// synthesising the click these controls are driven by - so on a phone the
+// button would simply do nothing. Touch events always target the element the
+// touch started on, so swallowing both here keeps the pair consistent.
 function SetModalOpen(modal, open)
 {
     modal.classList.toggle("open", open);
@@ -752,7 +757,7 @@ function AnyModalOpen()
 
 function SwallowEvents(element)
 {
-    ["mousedown", "touchstart", "click"].forEach(type =>
+    ["mousedown", "touchstart", "touchend", "click"].forEach(type =>
     {
         element.addEventListener(type, e => { e.stopPropagation(); }, false);
     });
@@ -760,7 +765,7 @@ function SwallowEvents(element)
 
 function OnActivate(element, action)
 {
-    ["mousedown", "touchstart"].forEach(type =>
+    ["mousedown", "touchstart", "touchend"].forEach(type =>
     {
         element.addEventListener(type, e => { e.stopPropagation(); }, false);
     });
