@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="apple-mobile-web-app-title" content="oh, flip!">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+        <title>oh, flip!</title>
+
+        <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            border: 0;
+            overflow: hidden; /*  Disable scrollbars */
+            display: block;  /* No floating content on sides */
+            background-color: black;
+        }
+
+        /* Shrink-wraps the canvas so the button row below it lines up with the
+           play area on any window width. line-height keeps the inline canvas
+           from adding a gap underneath. */
+        #game {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        /* Menu buttons and popups. These are HTML rather than canvas drawing
+           so the attribution links are real, clickable links and the cache
+           coordinates can be selected and copied. The row sits below the
+           canvas so it never covers the play area, and stays visible while
+           playing; main.js stops its events from reaching the game so pressing
+           a button never makes the player flip. */
+        #menuButtons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding-top: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 3px solid #000;
+            border-radius: 6px;
+            background: #FF9600;
+            color: #000;
+            font: bold 18px Arial, sans-serif;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.75);
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal.open {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modalCard {
+            max-width: 460px;
+            width: 100%;
+            background: #FFF;
+            border: 5px solid #000;
+            border-radius: 10px;
+            padding: 22px;
+            font: 16px/1.5 Arial, sans-serif;
+            color: #000;
+        }
+
+        .modalCard h2 {
+            margin: 0 0 14px 0;
+            font-size: 30px;
+            color: #FF9600;
+            -webkit-text-stroke: 1px #000;
+        }
+
+        .modalCard p {
+            margin: 0 0 12px 0;
+        }
+
+        .modalCard ul {
+            margin: 0 0 12px 0;
+            padding-left: 22px;
+        }
+
+        .modalCard a {
+            color: #0055CC;
+        }
+
+        /* The coordinates are the payoff - make them stand out and easy to
+           select. */
+        #cacheMessage, .cacheCoords {
+            margin: 4px 0 14px 0;
+            padding: 14px;
+            border: 3px dashed #000;
+            border-radius: 6px;
+            background: #FFF3D6;
+            font-size: 19px;
+            font-weight: bold;
+            text-align: center;
+            user-select: text;
+        }
+        </style>
+    </head>
+    <body>
+        <center>
+        <div id="game">
+            <canvas id="canvas" width="800" height="600" style="width:800px; height:600px"></canvas>
+
+            <div id="menuButtons">
+                <button id="instructionsBtn" class="btn" type="button">instructions</button>
+                <button id="creditsBtn" class="btn" type="button">credits</button>
+            </div>
+        </div>
+        </center>
+
+        <div id="instructionsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="instructionsTitle">
+            <div class="modalCard">
+                <h2 id="instructionsTitle">How to play</h2>
+
+                <ul>
+                    <li>Click or tap anywhere to bounce.</li>
+                    <li><b>Hold</b> while you are in the air to spin - the longer
+                    you hold, the more flips you land.</li>
+                    <li><b>Let go</b> before you come down. Landing upright
+                    bounces you higher; landing crooked drops you off the
+                    trampoline and resets your height.</li>
+                    <li>Each landing that completes the current goal moves you on
+                    to the next one.</li>
+                </ul>
+
+                <p>The game has <b><span id="levelCount">?</span> levels</b>, each
+                one a goal shown in the top right corner while you play.</p>
+
+                <p>Reach and complete <b>level <span id="solutionLevel">?</span></b>
+                and the game reveals the coordinates of geocache
+                <b>GCBVZEN</b>.</p>
+
+                <p>Your progress is saved in this browser, so you can stop and
+                come back to it later.</p>
+
+                <!-- Filled in by main.js once the solution level is cleared. -->
+                <div id="instructionsCache"></div>
+
+                <button class="btn modalClose" type="button">close</button>
+            </div>
+        </div>
+
+        <div id="cacheModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cacheTitle">
+            <div class="modalCard">
+                <h2 id="cacheTitle">You did it!</h2>
+
+                <p>You completed level <b><span id="cacheLevel">?</span></b>. Here
+                is what you came for:</p>
+
+                <p id="cacheMessage"></p>
+
+                <p>Write the coordinates down before you close this - you can
+                always find them again in <b>instructions</b> on the start
+                screen once you have earned them.</p>
+
+                <button class="btn modalClose" type="button">close</button>
+            </div>
+        </div>
+
+        <div id="creditsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="creditsTitle">
+            <div class="modalCard">
+                <h2 id="creditsTitle">Credits</h2>
+
+                <p><b>oh, flip!</b> was created by <b>Bryan Perfetto</b> as his
+                js13kGames 2019 entry.</p>
+
+                <p>
+                    <a href="https://js13kgames.com/games/oh-flip/index.html" target="_blank" rel="noopener">Play the original game</a><br>
+                    <a href="https://github.com/regularkid/ohflip" target="_blank" rel="noopener">Original source code on GitHub</a>
+                </p>
+
+                <p>oh, flip! is All Rights Reserved, &copy; 2019 Bryan Perfetto.
+                This geocaching version is published with his written permission,
+                given by email on 3 August 2026, on the condition that he is
+                credited and that the original game and its repository are linked.</p>
+
+                <p>Geocaching adaptation for mystery cache <b>GCBVZEN</b> by
+                geocacher <b>Ja-x</b> and <b>Claude</b>, &copy; 2026.</p>
+
+                <button class="btn modalClose" type="button">close</button>
+            </div>
+        </div>
+
+        <!-- main.js, not main.min.js: this is an adaptation under active edit,
+             and the js13k size limit the minified build existed for no longer
+             applies. main.min.js is upstream's build and is now unused. -->
+        <script src="main.js"></script>
+    </body>
+</html>

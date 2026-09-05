@@ -1,14 +1,12 @@
 # Claude Code per-user settings (machine/profile specific, not shared)
 **/.claude/settings.local.json
 
-# ohflip (regularkid/ohflip, js13k 2019) - All Rights Reserved, (c) 2019 Bryan Perfetto.
-# Lupa saatu kirjallisesti sahkopostitse 2026-08-03 (Bryan Perfetto,
-# regularkid@gmail.com): saa muokata ja julkaista geokatkoversiona ilmaiseksi,
-# ei-kaupallisesti. Ehdot: tekijan krediitti seka linkki alkuperaiseen peliin ja
-# sen lahdekoodirepoon, ja valmiin version linkki lahetettava Bryanille.
-# Tama on yha upstreamin muokkaamaton klooni, siksi ignoressa. Poista ignore
-# vasta kun tama on oma sovitus jossa ylla olevat ehdot tayttyvat.
-ohflip/
+# ohflip/ on regularkid/ohflip (js13k 2019) - All Rights Reserved,
+# (c) 2019 Bryan Perfetto. Julkaistaan taalla geokatkosovituksena hanen
+# kirjallisella luvallaan (sahkoposti 2026-08-03): ilmainen, ei-kaupallinen
+# kaytto ehdolla etta han saa krediitin ja etta alkuperaiseen peliin ja sen
+# lahdekoodirepoon linkitetaan. Nama krediitit ovat ohflip/index.html:ssa.
+# Ei siis enaa ignoressa.
 
 # Racerin sisainen jatkokehitysohje - ei julkaista arcaden repossa
 racer/Ja-x's Arcade Racer -pelin jatkokehitysohje.md
