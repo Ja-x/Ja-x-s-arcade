@@ -17,8 +17,43 @@
             margin: 0px;
             border: 0;
             overflow: hidden; /*  Disable scrollbars */
-            display: block;  /* No floating content on sides */
             background-color: black;
+        }
+
+        /* Centres the game on whatever is left over, so a phone in portrait
+           does not leave all the empty space at the bottom. */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* The canvas keeps its 800x600 drawing buffer; only its displayed size
+           changes. Whichever runs out first - the window's width, or its height
+           minus the button row - decides the scale, so the 4:3 picture always
+           fits whole. dvh tracks a phone browser's collapsing address bar; the
+           vh pair above it is the fallback for browsers without dvh. */
+        :root {
+            --buttonBar: 56px;
+        }
+
+        #canvas {
+            display: block;
+            width:  min(100vw, calc((100vh - var(--buttonBar)) * 4 / 3));
+            height: min(75vw, calc(100vh - var(--buttonBar)));
+            max-width: 800px;   /* never upscale past the drawing buffer - both */
+            max-height: 600px;  /* caps are 4:3 too, so the ratio still holds */
+            touch-action: none;          /* no pinch zoom or scroll on the play area */
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @supports (height: 100dvh) {
+            #canvas {
+                width:  min(100vw, calc((100dvh - var(--buttonBar)) * 4 / 3));
+                height: min(75vw, calc(100dvh - var(--buttonBar)));
+            }
         }
 
         /* Shrink-wraps the canvas so the button row below it lines up with the
@@ -43,6 +78,8 @@
         }
 
         .btn {
+            touch-action: manipulation;  /* no 300ms double-tap-zoom delay */
+            -webkit-tap-highlight-color: transparent;
             padding: 8px 16px;
             border: 3px solid #000;
             border-radius: 6px;
@@ -63,13 +100,18 @@
             box-sizing: border-box;
         }
 
+        /* flex-start rather than centre: a card taller than the screen would be
+           centred with its top above the scroll origin, where scrolling can
+           never reach it. The card's auto margins still centre it whenever it
+           does fit. */
         .modal.open {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
         }
 
         .modalCard {
+            margin: auto;
             max-width: 460px;
             width: 100%;
             background: #FFF;
@@ -118,7 +160,7 @@
     <body>
         <center>
         <div id="game">
-            <canvas id="canvas" width="800" height="600" style="width:800px; height:600px"></canvas>
+            <canvas id="canvas" width="800" height="600"></canvas>
 
             <div id="menuButtons">
                 <button id="instructionsBtn" class="btn" type="button">instructions</button>
@@ -204,5 +246,13 @@
              and the js13k size limit the minified build existed for no longer
              applies. main.min.js is upstream's build and is now unused. -->
         <script src="main.js"></script>
+
+        <!-- GoatCounter-kavijaseuranta (tili: jaxarcade), sama kuin muilla
+             pelisivuilla. Ei laske kayntia localhostilla. -->
+        <script
+            data-goatcounter="https://jaxarcade.goatcounter.com/count"
+            async
+            src="//gc.zgo.at/count.js">
+        </script>
     </body>
 </html>

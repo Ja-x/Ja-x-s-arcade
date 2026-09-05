@@ -88,9 +88,12 @@ let goalCompleteTime = 0.0;
 
 document.addEventListener("mousedown", e => { touch = true; SetTouchPos(e); }, false);
 document.addEventListener("mouseup", e => { touch = false; SetTouchPos(e); }, false);
-document.addEventListener("touchstart", e => { touch = true; SetTouchPos(e); e.preventDefault(); }, false );
-document.addEventListener("touchend", e => { touch = false; SetTouchPos(e); e.preventDefault(); }, false );
-document.addEventListener("touchcancel", e => { touch = false; SetTouchPos(e); e.preventDefault(); }, false );
+// {passive: false} is required: document-level touchstart listeners are passive
+// by default in mobile browsers, which silently ignores preventDefault and lets
+// the tap scroll or zoom the page instead of flipping the player.
+document.addEventListener("touchstart", e => { touch = true; SetTouchPos(e); e.preventDefault(); }, {passive: false} );
+document.addEventListener("touchend", e => { touch = false; SetTouchPos(e); e.preventDefault(); }, {passive: false} );
+document.addEventListener("touchcancel", e => { touch = false; SetTouchPos(e); e.preventDefault(); }, {passive: false} );
 document.addEventListener("keydown", e =>
 {
     if (e.altKey && e.code === "KeyR")
