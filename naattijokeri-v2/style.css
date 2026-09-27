@@ -1,0 +1,678 @@
+/* Naattijokeri – ulkoasu
+ * Sarjakuvamainen yhdistelmä arvontakonetta ja vanhaa mekaanista hedelmäpeliä.
+ * Kaikki grafiikka on tehty CSS:llä ja SVG:llä, ei ulkoisia resursseja.
+ */
+
+:root {
+  --ink:        #17101f;
+  --cab-light:  #6c34a8;
+  --cab-dark:   #3a1660;
+  --cab-edge:   #24103c;
+  --gold:       #f7c744;
+  --gold-dark:  #a9741a;
+  --chrome-1:   #f2f5f8;
+  --chrome-2:   #9aa7b4;
+  --chrome-3:   #5b6a79;
+  --cream:      #ffeec2;
+  --hit:        #4dffa0;
+  --panel:      #0c0912;
+
+  /* Rullan koko skaalautuu näytön leveyden mukaan.
+     Rivillä on 8 rullaa + N/E-tunnus + astemerkki + piste + välit. */
+  --reel-w: min(56px, calc((100vw - 44px) / 11.2));
+  --reel-h: calc(var(--reel-w) * 1.4);
+  --digit:  calc(var(--reel-w) * 0.8);
+  --gap:    calc(var(--reel-w) * 0.11);
+
+  --font-display: "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+  --font-digit: "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-display);
+  color: var(--cream);
+  background:
+    radial-gradient(circle at 50% 0%, #33194f 0%, #1a1026 55%, #120b1c 100%),
+    #120b1c;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Kevyt sarjakuvamainen rasteripiste taustalle. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .35;
+  background-image: radial-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+.svg-defs { position: absolute; width: 0; height: 0; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 8px 22px;
+}
+
+/* ------------------------------------------------------------------
+ * KONEEN RUNKO
+ * ------------------------------------------------------------------ */
+
+.cabinet {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  padding: 10px;
+  border: 5px solid var(--ink);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, var(--cab-light) 0%, var(--cab-dark) 55%, #2a0f47 100%);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, .25),
+    inset 0 -6px 0 rgba(0, 0, 0, .35),
+    0 10px 0 var(--cab-edge),
+    0 16px 34px rgba(0, 0, 0, .6);
+}
+
+/* Kromireunus koneen ympärille. */
+.cabinet::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 15px;
+  border: 3px solid rgba(255, 255, 255, .18);
+  border-bottom-color: rgba(0, 0, 0, .28);
+  pointer-events: none;
+}
+
+/* ---------------- otsikko ---------------- */
+
+.cabinet__crown {
+  position: relative;
+  padding: 8px 10px 10px;
+  text-align: center;
+  border-radius: 14px 14px 6px 6px;
+  border: 3px solid var(--ink);
+  background: linear-gradient(180deg, #ffd76b 0%, var(--gold) 45%, #d9930f 100%);
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .25), 0 4px 0 rgba(0, 0, 0, .35);
+}
+
+.bulbs {
+  position: absolute;
+  inset: 5px 10px auto;
+  height: 8px;
+  background-image: radial-gradient(circle, #fff6d0 0 42%, rgba(255, 200, 60, .85) 43% 62%, transparent 63%);
+  background-size: 20px 8px;
+  background-repeat: repeat-x;
+  opacity: .85;
+}
+
+.title {
+  margin: 10px 0 2px;
+  font-size: clamp(1.5rem, 7.2vw, 3rem);
+  font-weight: 900;
+  letter-spacing: .03em;
+  line-height: 1;
+  color: #fff3c9;
+  -webkit-text-stroke: .085em var(--ink);
+  paint-order: stroke fill;
+  text-shadow:
+    0 .05em 0 var(--gold-dark),
+    0 .1em 0 var(--ink),
+    0 .16em .12em rgba(0, 0, 0, .45);
+  transform: rotate(-1deg);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: clamp(.62rem, 2.6vw, .8rem);
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: #4a2a06;
+}
+
+/* ---------------- runko: näyttö + vipu ---------------- */
+
+.cabinet__body {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.display {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--reel-w) * 0.3);
+  padding: 12px 10px;
+  border: 4px solid var(--ink);
+  border-radius: 14px;
+  background:
+    radial-gradient(120% 90% at 50% 0%, #1d1630 0%, var(--panel) 70%),
+    var(--panel);
+  box-shadow:
+    inset 0 0 26px rgba(0, 0, 0, .9),
+    inset 0 2px 0 rgba(255, 255, 255, .06);
+}
+
+/* Lasin heijastus näytön päällä. */
+.display__glass {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, .10) 0 18%, rgba(255, 255, 255, 0) 42%);
+}
+
+/* ---------------- koordinaattirivit ---------------- */
+
+.coord-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+}
+
+.coord-label,
+.coord-mark {
+  flex: 0 0 auto;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--gold);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, .8);
+}
+
+.coord-label {
+  width: calc(var(--reel-w) * 0.62);
+  font-size: calc(var(--reel-w) * 0.62);
+  text-align: center;
+}
+
+.coord-mark {
+  width: calc(var(--reel-w) * 0.42);
+  text-align: center;
+  font-size: calc(var(--reel-w) * 0.6);
+}
+
+.coord-mark--deg {
+  align-self: flex-start;
+  margin-top: calc(var(--reel-h) * 0.1);
+  font-size: calc(var(--reel-w) * 0.85);
+}
+
+.coord-mark--dot {
+  align-self: flex-end;
+  margin-bottom: calc(var(--reel-h) * 0.14);
+  font-size: calc(var(--reel-w) * 0.8);
+}
+
+/* ---------------- numerorullat ---------------- */
+
+.reel {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--reel-w);
+  padding: 2px;
+  border: 3px solid #0a0710;
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--chrome-2), var(--chrome-3) 40%, #35414e);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .55);
+  transition: box-shadow .18s ease, border-color .18s ease;
+}
+
+.reel__window {
+  position: relative;
+  height: var(--reel-h);
+  overflow: hidden;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #241b33, #120d1e 45%, #241b33);
+}
+
+/* Sylinterin varjostus ikkunan päälle. */
+.reel__window::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(0, 0, 0, .75) 0%,
+    rgba(0, 0, 0, 0) 30%,
+    rgba(255, 255, 255, .10) 50%,
+    rgba(0, 0, 0, 0) 70%,
+    rgba(0, 0, 0, .75) 100%);
+}
+
+.reel__strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  will-change: transform;
+}
+
+.reel__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--reel-h);
+  font-family: var(--font-digit);
+  font-size: var(--digit);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--cream);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, .6);
+}
+
+.reel.is-spinning .reel__strip { filter: blur(.7px); }
+
+/* Hannunvaakuna näkyy vain ennen ensimmäistä arvontaa. */
+.reel__symbol {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+}
+
+.reel__symbol svg {
+  width: 62%;
+  height: 62%;
+  filter: drop-shadow(0 2px 1px rgba(0, 0, 0, .7));
+}
+
+.reel.is-live .reel__symbol { display: none; }
+
+/* Ennen ensimmäistä arvontaa rullassa näkyy vain hannunvaakuna. */
+.reel:not(.is-live) .reel__strip { visibility: hidden; }
+
+/* Osumalamppu: näkyy vain osumassa, ei pelkkä värivihje. */
+.reel__lamp {
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+  z-index: 2;
+  width: calc(var(--reel-w) * 0.22);
+  height: calc(var(--reel-w) * 0.22);
+  transform: translateX(-50%) scale(.2);
+  border-radius: 50%;
+  border: 2px solid #0a0710;
+  background: radial-gradient(circle at 40% 35%, #dfffee, var(--hit) 55%, #12a862);
+  opacity: 0;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+/* ---------------- osuma ---------------- */
+
+.reel.is-hit {
+  border-color: var(--hit);
+  box-shadow:
+    0 0 0 3px rgba(77, 255, 160, .3),
+    0 0 18px 5px rgba(77, 255, 160, .6),
+    inset 0 0 14px rgba(77, 255, 160, .45);
+}
+
+.reel.is-hit .reel__window {
+  background: linear-gradient(180deg, #17402f, #0d2a1f 45%, #17402f);
+}
+
+.reel.is-hit .reel__lamp {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+  box-shadow: 0 0 10px 3px rgba(77, 255, 160, .8);
+}
+
+.reel.flash { animation: hitFlash .5s ease-out; }
+
+@keyframes hitFlash {
+  0% {
+    box-shadow:
+      0 0 0 6px rgba(255, 255, 255, .85),
+      0 0 34px 14px rgba(77, 255, 160, .9),
+      inset 0 0 20px rgba(255, 255, 255, .7);
+  }
+  100% {
+    box-shadow:
+      0 0 0 3px rgba(77, 255, 160, .3),
+      0 0 18px 5px rgba(77, 255, 160, .6),
+      inset 0 0 14px rgba(77, 255, 160, .45);
+  }
+}
+
+/* ---------------- puhekupla ---------------- */
+
+.bubble {
+  position: absolute;
+  left: 50%;
+  top: -12px;
+  z-index: 6;
+  max-width: 92%;
+  padding: 8px 14px;
+  border: 4px solid var(--ink);
+  border-radius: 16px;
+  background: #fff6e0;
+  color: #2b1140;
+  font-size: clamp(.75rem, 3.2vw, 1.05rem);
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.15;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, .4);
+  transform: translate(-50%, -100%) scale(.6);
+  opacity: 0;
+  transition: transform .22s cubic-bezier(.2, 1.6, .4, 1), opacity .18s ease;
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -16px;
+  width: 0;
+  height: 0;
+  transform: translateX(-50%);
+  border: 9px solid transparent;
+  border-top: 16px solid var(--ink);
+}
+
+.bubble.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -100%) scale(1) rotate(-1.5deg);
+}
+
+/* ---------------- vipu ---------------- */
+
+.lever-area {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lever {
+  position: relative;
+  display: block;
+  width: 92px;
+  height: 100%;
+  min-height: 150px;
+  padding: 0;
+  border: 4px solid var(--ink);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ff8a3d, #d8391f 60%, #96210f);
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, .35), 0 5px 0 rgba(0, 0, 0, .45);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.lever:focus-visible {
+  outline: 4px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.lever__mount {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  width: 46px;
+  height: 22px;
+  transform: translateX(-50%);
+  border: 3px solid var(--ink);
+  border-radius: 8px 8px 4px 4px;
+  background: linear-gradient(180deg, var(--chrome-1), var(--chrome-3));
+}
+
+.lever__arm {
+  position: absolute;
+  left: 50%;
+  bottom: 36px;
+  width: 14px;
+  height: 78px;
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotate(0deg);
+}
+
+.lever__stick {
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--ink);
+  border-radius: 7px;
+  background: linear-gradient(90deg, var(--chrome-3), var(--chrome-1) 40%, var(--chrome-2) 70%, var(--chrome-3));
+}
+
+.lever__knob {
+  position: absolute;
+  left: 50%;
+  top: -20px;
+  width: 34px;
+  height: 34px;
+  transform: translateX(-50%);
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff1a8, #f5493b 55%, #8e1408);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .45);
+}
+
+.lever__label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+  color: #fff3c9;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, .55);
+}
+
+.lever.is-pulled .lever__arm { animation: leverPull .42s ease-in-out; }
+
+@keyframes leverPull {
+  0%   { transform: translateX(-50%) rotate(0deg); }
+  30%  { transform: translateX(-50%) rotate(34deg); }
+  55%  { transform: translateX(-50%) rotate(34deg); }
+  100% { transform: translateX(-50%) rotate(0deg); }
+}
+
+.lever[disabled] {
+  cursor: default;
+  filter: saturate(.45) brightness(.75);
+}
+
+/* ---------------- krediittilaatta ---------------- */
+
+.credit-plate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-top: 10px;
+  padding: 7px 14px;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #3a2058, #1d0f33);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .14), 0 4px 0 rgba(0, 0, 0, .4);
+  font-size: clamp(.66rem, 2.7vw, .84rem);
+  font-weight: 900;
+  letter-spacing: .07em;
+  color: #e8dbff;
+}
+
+.credit-plate__value {
+  min-width: 1.6em;
+  text-align: center;
+  font-size: 1.5em;
+  line-height: 1;
+  color: var(--hit);
+  text-shadow: 0 0 10px rgba(77, 255, 160, .55), 0 2px 0 rgba(0, 0, 0, .8);
+}
+
+.credit-plate.is-empty .credit-plate__value {
+  color: #9b8ab8;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, .8);
+}
+
+.credit-plate__note {
+  font-size: .78em;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: #b9a6dc;
+}
+
+.credit-plate.is-pop { animation: creditPop .3s ease-out; }
+
+@keyframes creditPop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+/* ---------------- jalusta: äänikytkin ja vihje ---------------- */
+
+.cabinet__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 3px solid var(--ink);
+  border-radius: 6px 6px 14px 14px;
+  background: linear-gradient(180deg, #2a1145, #1c0b2f);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .12);
+}
+
+.sound-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffe07a, var(--gold) 55%, #cf9a12);
+  color: #35180a;
+  font-family: inherit;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, .45);
+}
+
+.sound-toggle:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0, 0, 0, .45); }
+.sound-toggle:focus-visible { outline: 4px solid var(--hit); outline-offset: 3px; }
+
+.sound-toggle.is-off {
+  background: linear-gradient(180deg, #8f8aa0, #5d5870);
+  color: #1b1226;
+}
+
+.sound-toggle__icon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sound-toggle__cone { fill: currentColor; }
+.sound-toggle__cross { display: none; }
+.sound-toggle.is-off .sound-toggle__waves { display: none; }
+.sound-toggle.is-off .sound-toggle__cross { display: inline; }
+
+.hint {
+  flex: 1 1 180px;
+  margin: 0;
+  font-size: .74rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #d8c7f0;
+  text-align: right;
+}
+
+.backlink { margin: 0; font-size: .8rem; }
+.backlink a { color: #c9b3ec; text-decoration: none; font-weight: 700; }
+.backlink a:hover,
+.backlink a:focus { text-decoration: underline; }
+
+/* ------------------------------------------------------------------
+ * MOBIILI: vipu koneen alle, kevyemmät reunukset
+ * ------------------------------------------------------------------ */
+
+@media (max-width: 720px) {
+  .stage { padding: 8px 4px 18px; }
+
+  .cabinet {
+    padding: 6px;
+    border-width: 4px;
+    border-radius: 16px;
+  }
+
+  .display { padding: 10px 6px; border-width: 3px; }
+
+  .cabinet__body { flex-direction: column; gap: 8px; }
+
+  .lever-area { width: 100%; }
+
+  .lever {
+    width: 100%;
+    max-width: 420px;
+    min-height: 96px;
+    height: 96px;
+  }
+
+  .lever__mount { bottom: 16px; }
+  .lever__arm { bottom: 26px; height: 52px; }
+  .lever__knob { width: 28px; height: 28px; top: -16px; }
+  .lever__label { bottom: 4px; }
+
+  .hint { text-align: left; font-size: .68rem; }
+}
+
+/* ------------------------------------------------------------------
+ * SAAVUTETTAVUUS: vähennetty liike
+ * ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .reel.flash { animation: none; }
+  .credit-plate.is-pop { animation: none; }
+  .bubble { transition: opacity .15s linear; }
+  .lever.is-pulled .lever__arm { animation: leverPull .2s linear; }
+  .reel.is-spinning .reel__strip { filter: none; }
+}

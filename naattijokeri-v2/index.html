@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Naattijokeri – Ja-x's Arcade</title>
+<meta name="description" content="Naattijokeri – sarjakuvamainen jokeriarvontakone geokätköilymysteerin ratkaisemiseen. Krediitit ansaitaan Satelliittijahdista.">
+<meta name="color-scheme" content="dark">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="satelliittijahti/satellite-hunt.css">
+</head>
+<body>
+
+<!-- Hannunvaakuna, piirretään kerran ja käytetään <use>-viittauksilla rullissa. -->
+<svg class="svg-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="hannunvaakuna" viewBox="0 0 100 100">
+      <path d="M34 8 L8 8 L8 34 L92 34 L92 8 L66 8 L66 92 L92 92 L92 66 L8 66 L8 92 L34 92 Z"
+            fill="none" stroke="currentColor" stroke-width="9"
+            stroke-linejoin="round" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main class="stage">
+
+  <div class="cabinet">
+
+    <header class="cabinet__crown">
+      <div class="bulbs" aria-hidden="true"></div>
+      <h1 class="title" data-text="NAATTIJOKERI">NAATTIJOKERI</h1>
+      <p class="subtitle">Mysteeriarvonta &mdash; kirjoita osumat itse muistiin!</p>
+    </header>
+
+    <div class="cabinet__body">
+
+      <section class="display" aria-label="Koordinaattirivit">
+        <div class="display__glass" aria-hidden="true"></div>
+
+        <!-- Rivit rakennetaan js/reels.js:ssä layout-kuvauksen perusteella. -->
+        <div class="coord-row" id="row-north"></div>
+        <div class="coord-row" id="row-east"></div>
+
+        <div class="bubble" id="luckyMessage" hidden>
+          <span class="bubble__text">Kannattaisiko laittaa lotto vetämään?</span>
+        </div>
+      </section>
+
+      <div class="lever-area">
+        <button type="button" class="lever" id="lever"
+                aria-label="Vipu: käynnistä arvonta">
+          <span class="lever__mount" aria-hidden="true"></span>
+          <span class="lever__arm" aria-hidden="true">
+            <span class="lever__stick"></span>
+            <span class="lever__knob"></span>
+          </span>
+          <span class="lever__label">VEDÄ</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Yhteinen krediittisaldo: täytetään js/credits.js:ssä. -->
+    <div class="credit-plate" id="creditPlate">
+      <span class="credit-plate__label">KREDITIT:</span>
+      <b class="credit-plate__value" id="creditValue" aria-live="polite">0</b>
+      <span class="credit-plate__note">1 arvonta = 1 krediitti</span>
+    </div>
+
+    <footer class="cabinet__foot">
+      <button type="button" class="sound-toggle" id="soundToggle" aria-pressed="true">
+        <svg class="sound-toggle__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path class="sound-toggle__cone" d="M4 9h4l5-4v14l-5-4H4z"/>
+          <g class="sound-toggle__waves"><path d="M16.5 9a4.5 4.5 0 0 1 0 6"/><path d="M19 6.5a8 8 0 0 1 0 11"/></g>
+          <g class="sound-toggle__cross"><path d="M17 9.5l5 5"/><path d="M22 9.5l-5 5"/></g>
+        </svg>
+        <span class="sound-toggle__text" id="soundToggleText">SOUNDS: ON</span>
+      </button>
+
+      <p class="hint" id="stateHint">Paina vipua ja katso, mitkä numerot syttyvät vihreinä.</p>
+    </footer>
+
+  </div>
+
+  <!-- Satelliittijahti rakentaa oman käyttöliittymänsä tähän. -->
+  <section id="satelliteHunt" aria-label="Satelliittijahti"></section>
+
+  <p class="backlink"><a href="../index.html">&larr; Ja-x's Arcade</a></p>
+
+  <!-- Ruudunlukijoille: kierroksen tulos tekstinä. -->
+  <p class="sr-only" id="srStatus" role="status" aria-live="polite"></p>
+
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/reels.js"></script>
+<script src="js/game.js"></script>
+<script src="satelliittijahti/satellite-hunt.js"></script>
+<script src="js/credits.js"></script>
+</body>
+</html>
