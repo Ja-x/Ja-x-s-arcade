@@ -10,3 +10,8 @@
 
 # Racerin sisainen jatkokehitysohje - ei julkaista arcaden repossa
 racer/Ja-x's Arcade Racer -pelin jatkokehitysohje.md
+
+# Onnenpelin sisaiset dokumentit (README ja toiminnalliset spesifikaatiot)
+# - ei julkaista arcaden repossa
+onnenpeli/README.md
+onnenpeli/*_toiminnallinen_spesifikaatio_*.md
