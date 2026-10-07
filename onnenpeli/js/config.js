@@ -19,7 +19,7 @@ window.NJ = window.NJ || {};
  *
  * Peli lukee arvot aina getWinningCoordinates()-funktion kautta.
  * ------------------------------------------------------------------ */
-NJ.winningCipher = 'BlFYW0VdRFFVLkVcVHpZW1tG';
+NJ.winningCipher = 'BlFYW0VdR1lVLkVcVHpZW1tF';
 
 NJ.getWinningCoordinates = function () {
   var key = 'Hannunvaakuna';
