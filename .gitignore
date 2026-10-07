@@ -15,3 +15,6 @@ racer/Ja-x's Arcade Racer -pelin jatkokehitysohje.md
 # - ei julkaista arcaden repossa
 onnenpeli/README.md
 onnenpeli/*_toiminnallinen_spesifikaatio_*.md
+
+# Onnenpelin kommentoitu config (paikallinen kehitysversio) - ei tuotantoon
+onnenpeli/js/config-with-comments.js
