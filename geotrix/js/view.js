@@ -165,21 +165,30 @@ function openSharePopup(url) {
 	window.open(url, "geotrixShare", "width=600,height=500");
 }
 
-// Opening X takes the player away from the game (on mobile into a new tab or
-// the X app), so ask first. Uses the native confirm so window.open still runs
-// inside the tap and is not caught by popup blockers.
-function handleXShareLinkClick(e) {
-	var link = $(e.target).closest(".rrssb-twitter a");
-	if (!link.length) return;
-	e.preventDefault();
-	e.stopPropagation();
-	confirmAndOpenXShare(link.attr("href"));
+// Opening a share page takes the player away from the game (on mobile into a
+// new tab or the service's app), so ask first. Uses the native confirm so
+// window.open still runs inside the tap and is not caught by popup blockers.
+var SHARE_SERVICES = [
+	{ selector: ".rrssb-twitter a", name: "X (Twitter)" },
+	{ selector: ".rrssb-facebook a", name: "Facebook" }
+];
+
+function handleShareLinkClick(e) {
+	for (var i = 0; i < SHARE_SERVICES.length; i++) {
+		var link = $(e.target).closest(SHARE_SERVICES[i].selector);
+		if (link.length) {
+			e.preventDefault();
+			e.stopPropagation();
+			confirmAndOpenShare(SHARE_SERVICES[i].name, link.attr("href"));
+			return;
+		}
+	}
 }
 
-function confirmAndOpenXShare(url) {
+function confirmAndOpenShare(serviceName, url) {
 	var question = helpLanguage == 'fi'
-		? 'Avataanko X (Twitter) jakamista varten?'
-		: 'Open X (Twitter) to share?';
+		? 'Avataanko ' + serviceName + ' jakamista varten?'
+		: 'Open ' + serviceName + ' to share?';
 	if (window.confirm(question)) {
 		openSharePopup(url);
 	}
@@ -194,12 +203,12 @@ function initShareLinks() {
 		tweetIntentUrl("Play Geotrix and try to crack the geocache mystery!"));
 	$("#arcadeLink").attr("href", ARCADE_URL);
 
-	// Capture phase on document runs before the rrssb popup handler on the link.
+	// Capture phase on document runs before the rrssb popup handler on the links.
 	// A named handler is not added twice if initialize() runs again.
-	document.addEventListener("click", handleXShareLinkClick, true);
+	document.addEventListener("click", handleShareLinkClick, true);
 
 	$("#socialShare").off("click").on("click", function() {
-		confirmAndOpenXShare(tweetIntentUrl(
+		confirmAndOpenShare("X (Twitter)", tweetIntentUrl(
 			"I scored " + score + " points in Geotrix! Can you beat that and crack the mystery?"));
 	});
 }
