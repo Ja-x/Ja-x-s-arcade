@@ -90,6 +90,10 @@ function renderBeginningText() {
     }
 
 	renderText((trueCanvas.width)/2 + 2 * settings.scale,lowerheight,fontSize, '#2c3e50', score_text);
+    if (mob) {
+	    renderText((trueCanvas.width)/2 + 2 * settings.scale,lowerheight+40*settings.scale,fontSize, '#2c3e50', 'Hold the hexagon');
+	    renderText((trueCanvas.width)/2 + 2 * settings.scale,lowerheight+73*settings.scale,fontSize, '#2c3e50', 'to speed up blocks');
+    }
 }
 
 function drawKey(key, x, y) {
