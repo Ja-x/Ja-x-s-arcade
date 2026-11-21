@@ -165,6 +165,26 @@ function openSharePopup(url) {
 	window.open(url, "geotrixShare", "width=600,height=500");
 }
 
+// Opening X takes the player away from the game (on mobile into a new tab or
+// the X app), so ask first. Uses the native confirm so window.open still runs
+// inside the tap and is not caught by popup blockers.
+function handleXShareLinkClick(e) {
+	var link = $(e.target).closest(".rrssb-twitter a");
+	if (!link.length) return;
+	e.preventDefault();
+	e.stopPropagation();
+	confirmAndOpenXShare(link.attr("href"));
+}
+
+function confirmAndOpenXShare(url) {
+	var question = helpLanguage == 'fi'
+		? 'Avataanko X (Twitter) jakamista varten?'
+		: 'Open X (Twitter) to share?';
+	if (window.confirm(question)) {
+		openSharePopup(url);
+	}
+}
+
 // The share links in the markup are placeholders; they are built here so the
 // text and the URLs stay in one place and get properly encoded.
 function initShareLinks() {
@@ -174,8 +194,12 @@ function initShareLinks() {
 		tweetIntentUrl("Play Geotrix and try to crack the geocache mystery!"));
 	$("#arcadeLink").attr("href", ARCADE_URL);
 
-	$("#socialShare").on("click", function() {
-		openSharePopup(tweetIntentUrl(
+	// Capture phase on document runs before the rrssb popup handler on the link.
+	// A named handler is not added twice if initialize() runs again.
+	document.addEventListener("click", handleXShareLinkClick, true);
+
+	$("#socialShare").off("click").on("click", function() {
+		confirmAndOpenXShare(tweetIntentUrl(
 			"I scored " + score + " points in Geotrix! Can you beat that and crack the mystery?"));
 	});
 }
