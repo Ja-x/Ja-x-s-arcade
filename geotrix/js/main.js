@@ -89,6 +89,7 @@ function hideUIElements() {
 
 function init(b) {
 	if(settings.ending_block && b == 1){return;}
+	resetRush();
 	if (b) {
 		$("#pauseBtn").attr('src',"./images/btn_pause.svg");
 		if ($('#helpScreen').is(":visible")) {
@@ -363,7 +364,7 @@ function helpBodyHtml(lang) {
 		return "<div id = 'instructions_head'>PELIOHJEET</div>" +
 			"<p>Geotrixin tavoitteena on estää palikoita karkaamasta ulomman harmaan kuusikulmion sisältä.</p>" +
 			"<p>" + (mobile ? 'Kosketa näytön vasenta ja oikeaa reunaa' : 'Paina vasenta ja oikeaa nuolinäppäintä') +
-			" pyörittääksesi kuusikulmiota." + (mobile ? '' : ' Alanuoli nopeuttaa palikan putoamista.') + "</p>" +
+			" pyörittääksesi kuusikulmiota." + (mobile ? ' Pidä sormea kuusikulmion päällä nopeuttaaksesi palikan putoamista.' : ' Alanuoli nopeuttaa palikan putoamista.') + "</p>" +
 			"<p>Poista palikoita ja kerää pisteitä saattamalla vähintään kolme samanväristä palikkaa vastakkain.</p>" +
 			"<p>Comboputken jäljellä oleva aika näkyy " + comboLinesFi + ".</p>" +
 			"<p>Pelaa yli " + WINNING_SCORE + " pistettä ansaitaksesi geokätkömysteerin <b>GCBVZC6</b> koordinaatit.</p> " +
@@ -374,7 +375,7 @@ function helpBodyHtml(lang) {
 	return "<div id = 'instructions_head'>HOW TO PLAY</div>" +
 		"<p>The goal of Geotrix is to stop blocks from leaving the inside of the outer gray hexagon.</p>" +
 		"<p>" + (mobile ? 'Tap the left and right sides of the screen' : 'Press the right and left arrow keys') +
-		" to rotate the Hexagon." + (mobile ? '' : ' Press the down arrow to speed up the block falling.') + "</p>" +
+		" to rotate the Hexagon." + (mobile ? ' Hold your finger on the hexagon to speed up the block falling.' : ' Press the down arrow to speed up the block falling.') + "</p>" +
 		"<p>Clear blocks and get points by making 3 or more blocks of the same color touch.</p>" +
 		"<p>Time left before your combo streak disappears is indicated by " + comboLines + " the outer hexagon.</p>" +
 		"<p>Score more than " + WINNING_SCORE + " points to earn the coordinates for geocache mystery <b>GCBVZC6</b>.</p> " +

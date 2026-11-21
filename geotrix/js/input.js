@@ -19,24 +19,13 @@ function addKeyListeners() {
 		keypress.register_combo({
 		keys: "down",
 		on_keydown: function() {
-			var tempSpeed = settings.speedModifier;
-			if (MainHex && gameState !== 0){
-				//speed up block temporarily
-				if(settings.speedUpKeyHeld == false){
-					settings.speedUpKeyHeld = true;
-					window.rush *=4;
-				}
+			if (MainHex && gameState !== 0) {
+				startRush();
 			}
-			//settings.speedModifier = tempSpeed;
 		},
-		on_keyup:function(){
-			if (MainHex && gameState !== 0){
-				//speed up block temporarily
-				
-				window.rush /=4;
-				settings.speedUpKeyHeld = false;
-			}
-		}	
+		on_keyup: function() {
+			stopRush();
+		}
 	});
 	
 	keypress.register_combo({
@@ -60,24 +49,13 @@ function addKeyListeners() {
 	keypress.register_combo({
 		keys: "s",
 		on_keydown: function() {
-			var tempSpeed = settings.speedModifier;
-			if (MainHex && gameState !== 0){
-				//speed up block temporarily
-				if(settings.speedUpKeyHeld == false){
-					settings.speedUpKeyHeld = true;
-					window.rush *=4;
-				}
+			if (MainHex && gameState !== 0) {
+				startRush();
 			}
-			//settings.speedModifier = tempSpeed;
 		},
-		on_keyup:function(){
-			if (MainHex && gameState !== 0){
-				//speed up block temporarily
-				
-				window.rush /=4;
-				settings.speedUpKeyHeld = false;
-			}
-		}	
+		on_keyup: function() {
+			stopRush();
+		}
 	});
 	keypress.register_combo({
 		keys: "p",
@@ -204,23 +182,56 @@ function inside (point, vs) {
 	return inside;
 };
 
+// Speeds up falling blocks while held (down arrow, S, or holding the hexagon on touch).
+function startRush() {
+	if (settings.speedUpKeyHeld) return;
+	settings.speedUpKeyHeld = true;
+	window.rush *= 4;
+}
+
+function stopRush() {
+	if (!settings.speedUpKeyHeld) return;
+	settings.speedUpKeyHeld = false;
+	window.rush /= 4;
+}
+
+function isOnHex(x, y) {
+	var dx = x - trueCanvas.width / 2;
+	var dy = y - trueCanvas.height / 2;
+	return dx * dx + dy * dy <= settings.hexWidth * settings.hexWidth;
+}
+
+var rushTouchId = null;
+
+function handleTouchRushStart(touch) {
+	if (!MainHex || gameState !== 1 || rushTouchId !== null) return false;
+	if (!isOnHex(touch.clientX, touch.clientY)) return false;
+	rushTouchId = touch.identifier;
+	startRush();
+	return true;
+}
+
+function handleTouchRushEnd(e) {
+	if (rushTouchId === null) return;
+	for (var i = 0; i < e.changedTouches.length; i++) {
+		if (e.changedTouches[i].identifier === rushTouchId) {
+			rushTouchId = null;
+			stopRush();
+			return;
+		}
+	}
+}
+
+function resetRush() {
+	rushTouchId = null;
+	stopRush();
+}
+
 function handleClickTap(x,y) {
 	if (x < 120 && y < 83 && $('.helpText').is(':visible')) {
 		showHelp();
 		return;
 	}
-	var radius = settings.hexWidth ;
-	var halfRadius = radius/2;
-	var triHeight = radius *(Math.sqrt(3)/2);
-	var Vertexes =[
-		[radius,0],
-		[halfRadius,-triHeight],
-		[-halfRadius,-triHeight],
-		[-radius,0],
-		[-halfRadius,triHeight],
-		[halfRadius,triHeight]];
-	Vertexes = Vertexes.map(function(coord){ 
-		return [coord[0] + trueCanvas.width/2, coord[1] + trueCanvas.height/2]});
 
 	if (!MainHex || gameState === 0 || gameState==-1) {
 		return;
@@ -233,4 +244,3 @@ function handleClickTap(x,y) {
 		MainHex.rotate(-1);
 	}
 }
-

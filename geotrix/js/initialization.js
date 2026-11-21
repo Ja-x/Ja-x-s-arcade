@@ -151,6 +151,8 @@ function initialize(a) {
 		document.addEventListener('touchmove', function(e) {
 			e.preventDefault();
 		}, false);
+		document.addEventListener('touchend', handleTouchRushEnd, false);
+		document.addEventListener('touchcancel', handleTouchRushEnd, false);
 		$(window).resize(scaleCanvas);
 		$(window).unload(function() {
 
@@ -254,7 +256,12 @@ function handlePause() {
 }
 
 function handleTap(e) {
-	handleClickTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+	for (var i = 0; i < e.changedTouches.length; i++) {
+		var touch = e.changedTouches[i];
+		if (!handleTouchRushStart(touch)) {
+			handleClickTap(touch.clientX, touch.clientY);
+		}
+	}
 }
 
 function handleClick(e) {

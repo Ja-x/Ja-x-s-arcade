@@ -181,6 +181,7 @@ function initShareLinks() {
 }
 
 function gameOverDisplay() {
+	resetRush();
 	settings.ending_block=false;
 	Cookies.set("visited",true);
 	var c = document.getElementById("canvas");
@@ -223,6 +224,7 @@ function pause(o) {
     }
 
 	pausable = false;
+	resetRush();
 	writeHighScores();
 	var message;
 	if (o) {
